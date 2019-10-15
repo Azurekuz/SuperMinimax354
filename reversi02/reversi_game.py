@@ -2,8 +2,8 @@
 
 import copy
 from datetime import datetime
-from reversi_board import ReversiBoard
-from reversi_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, MinimaxComputerPlayer
+from reversi02.reversi_board import ReversiBoard
+from reversi02.reversi_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, MinimaxComputerPlayer
 
 
 class ReversiGame:
@@ -86,7 +86,7 @@ def compare_players(player1, player2, board_size=8, board_filename=None):
 
 
 def main():
-    ReversiGame(MinimaxComputerPlayer("O", 7, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
+    ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
     '''
     for i in range(0, 1):
         compare_players(MinimaxComputerPlayer("X", 3, False), MinimaxComputerPlayer("O", 3, True), board_size=8)
