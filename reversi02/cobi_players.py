@@ -58,12 +58,12 @@ class GreedyComputerPlayer:
         return best_move
 
 
-class MinimaxPlayer:
+class cMinimaxPlayer:
     def __init__(self, symbol):
         self.symbol = symbol
 
     def get_move(self, board):
-        return self.max_function(board, 0, None)[1]
+        return self.max_function(board, 3, None)[1]
 
     def max_function(self, board, depth, move):
         if len(board.calc_valid_moves(self.symbol)) == 0 or depth > 2:

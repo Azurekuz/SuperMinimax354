@@ -80,7 +80,7 @@ class GreedyComputerPlayer:
         return board.calc_scores()[self.symbol]
 
 
-class MinimaxComputerPlayer:
+class eMinimaxComputerPlayer:
     def __init__(self, symbol, depth, k_heuristic):
         self.symbol = symbol
         self.cutoff = depth;
