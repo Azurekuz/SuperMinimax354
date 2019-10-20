@@ -2,7 +2,7 @@
 import random
 import copy
 from collections import deque
-from eugenek_playersNew import eMinimaxComputerPlayer
+from eugenek_players import eMinimaxComputerPlayer
 
 class QuiescentSearch(eMinimaxComputerPlayer):
     def __init__(self):
