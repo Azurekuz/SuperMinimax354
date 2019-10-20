@@ -14,8 +14,8 @@
   <component name="ProjectId" id="1SFnHP2K7L8k5PM4oL7yX3RA6Bh" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Project5V2" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="C:/Program Files/Git/git-bash.exe" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -87,6 +87,9 @@
       <updated>1571168122056</updated>
       <workItem from="1571168123289" duration="1276000" />
       <workItem from="1571246343451" duration="715000" />
+      <workItem from="1571247820089" duration="3524000" />
+      <workItem from="1571439920559" duration="3519000" />
+      <workItem from="1571592577099" duration="1004000" />
     </task>
     <servers />
   </component>
@@ -106,8 +109,19 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/reversi02/reversi_board.py</url>
+          <line>22</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PROJECT_6$reversi02.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571246877178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
     <SUITE FILE_PATH="coverage/PROJECT_6$PROJECT_6.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571175924969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
+    <SUITE FILE_PATH="coverage/PROJECT_6$reversi02.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571593332595" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
   </component>
 </project>

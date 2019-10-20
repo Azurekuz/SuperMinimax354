@@ -226,4 +226,3 @@ class GreedyComputerPlayerEugene:
     def emulateMove(self, board, move):
         board.make_move(self.symbol, move);
         return board.calc_scores()[self.symbol]
-

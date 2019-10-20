@@ -142,4 +142,5 @@ class eMinimaxComputerPlayer:
     def evaulateState(self, board, move):
         emuBoard = copy.deepcopy(board)
         emuBoard.make_move(self.symbol, move)
+
         return emuBoard.calc_scores()[self.symbol]

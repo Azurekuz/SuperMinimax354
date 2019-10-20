@@ -73,8 +73,8 @@ def compare_players(player1, player2, board_size=8, board_filename=None):
     game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
     time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
     for i in range(1, 11):
-        if i % 10 == 0:
-            #print(i, "games finished")
+        if i % 1 == 0:
+            print(i, "games finished")
             pass
         if (i % 2 != 0):
             game = ReversiGame(player1, player2, show_status=False, board_size=board_size, board_filename=board_filename)
