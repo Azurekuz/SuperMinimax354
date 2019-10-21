@@ -109,7 +109,7 @@ class eMinimaxComputerPlayer:
         The recursive base case along with where the evaluation is done and then returned up the recursive stack.
         '''
         if depth <= 0 or len(emuboard.calc_valid_moves(cur_symbol)) <= 0:
-            return self.evalulate(emuboard, cur_symbol, last_move);
+            return self.evaluate(emuboard, cur_symbol, last_move);
 
         eval = None
         valid_moves = emuboard.calc_valid_moves(cur_symbol);
@@ -146,10 +146,3 @@ class eMinimaxComputerPlayer:
                 return val1
             else:
                 return val2
-
-    #Greedy's evaluation
-    def evaulateState(self, board, move):
-        emuBoard = copy.deepcopy(board)
-        emuBoard.make_move(self.symbol, move)
-
-        return emuBoard.calc_scores()[self.symbol]

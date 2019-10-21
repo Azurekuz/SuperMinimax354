@@ -5,20 +5,30 @@ from collections import deque
 from eugenek_players import eMinimaxComputerPlayer
 
 class QuiescentSearch(eMinimaxComputerPlayer):
-    def __init__(self):
-        pass
+    def __init__(self, symbol, depth, k_heuristic):
+        super.__init__(symbol, depth, k_heuristic);
+        self.originalBoard = None;
 
     def get_move(self, board):
         emuBoard = copy.deepcopy(board);
+        self.originalBoard = emuBoard;
         self.begin_minimax(emuBoard)
 
-    def evaluate(self, board, symbol, last_move):
-        eval = board.calc_scores()[symbol]
-        if self.use_heuristic:
-            if ((last_move[0] == 0 or last_move[0] == (board.get_size() - 1)) and (
-                    last_move[1] == 0 or last_move[1] == (board.get_size() - 1))):
-                eval = eval * 1.55
-            elif ((last_move[0] == 0 or last_move[0] == (board.get_size() - 1)) or (
-                    last_move[1] == 0 or last_move[1] == (board.get_size() - 1))):
-                eval = eval * 1.35
+    def evaluate(self, board, symbol, last_move, quietEvaluated = False):
+        eval = super.evaluate();
+        valid_moves = board.calc_valid_moves;
+        if len(valid_moves) <= 0:
+            scores = board.calc_scores();
+            opponent_symbol = board.get_opponent_symbol(symbol);
+            if scores[symbol] > scores[opponent_symbol]:
+                eval = eval + 1;
+            elif scores[symbol] < scores[opponent_symbol]:
+                eval = eval - 1;
+            else:
+                eval = eval + 0;
+        elif not quietEvaluated:
+            self.quiet_search(board, 3, board.get_opponent_symbol(symbol), last_move);
         return eval;
+
+    def quiet_search(self, board, depth, cur_symbol, last_move):
+        pass

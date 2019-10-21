@@ -8,7 +8,7 @@ from reversi02.desmondl_players import HumanPlayer, RandomComputerPlayer, GreedC
 from reversi02.cobi_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, cMinimaxPlayer
 from reversi02.eugenek_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, eMinimaxComputerPlayer
 from reversi02.orion_player import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, oMinimaxComputerPlayer
-
+from reversi02.quiescent_search import QuiescentSearch;
 class ReversiGame:
 
     def __init__(self, player1, player2, show_status=True, board_size=8, board_filename=None):
@@ -120,7 +120,8 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = eMinimaxComputerPlayer(symbol, 4, True)
+    player = eMinimaxComputerPlayer(symbol, 4, False)
+    #player = QuiescentSearch(symbol, 4, True)
     return player;
 
 def get_player_d(symbol):
