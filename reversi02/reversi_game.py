@@ -120,8 +120,9 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = eMinimaxComputerPlayer(symbol, 4, True)
+    #player = eMinimaxComputerPlayer(symbol, 4, True)
     #player = QuiescentSearch(symbol, 4, True)
+    player = oMinimaxComputerPlayer(symbol);
     return player;
 
 def get_player_d(symbol):
@@ -130,7 +131,8 @@ def get_player_d(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = oMinimaxComputerPlayer(symbol)
+    #player = oMinimaxComputerPlayer(symbol)
+    player = QuiescentSearch(symbol)
     return player;
 
 
@@ -144,7 +146,7 @@ def main():
     #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
     print("")
     for i in range(0, 2):
-        compare_players(get_player_c("X"), get_player_d("O"), board_size=8)
+        compare_players(get_player_d("X"), get_player_c("O"), board_size=8)
         print()
 
 if __name__ == "__main__":
