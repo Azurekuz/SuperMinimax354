@@ -60,7 +60,7 @@ class GreedComputerPlayer:
                 final_move = validMovesList[i]
         return final_move
 
-class MiniMaxComputerPlayer:
+class dMiniMaxComputerPlayer:
 
     def __init__(self,symbol,depth):
         self.symbol = symbol
@@ -95,7 +95,7 @@ class MiniMaxComputerPlayer:
                 tempboard2 = copy.deepcopy(tempboard)
                 tempboard2.make_move(self.symbol, move)
                 opponentSymbol=tempboard2.get_opponent_symbol(symbol)
-                value = MiniMaxComputerPlayer.miniMaxValue(self,originalSymbol, opponentSymbol, tempboard2, depth-1)
+                value = dMiniMaxComputerPlayer.miniMaxValue(self,originalSymbol, opponentSymbol, tempboard2, depth-1)
                 if originalSymbol==symbol:
                     if value > bestMoveVal:
                         bestMoveVal = value
@@ -226,4 +226,3 @@ class GreedyComputerPlayerEugene:
     def emulateMove(self, board, move):
         board.make_move(self.symbol, move);
         return board.calc_scores()[self.symbol]
-

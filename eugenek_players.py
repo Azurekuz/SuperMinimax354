@@ -88,13 +88,10 @@ class eMinimaxComputerPlayer:
 
     def get_move(self, board):
         emuBoard = copy.deepcopy(board)
-        return self.begin_minimax(emuBoard)
-
-    def begin_minimax(self, board):
         max_val = None
-        valid_moves = board.calc_valid_moves(self.symbol)
+        valid_moves = emuBoard.calc_valid_moves(self.symbol)
         for i in range(0, len(valid_moves)):
-            cur_eval = self.minimax(board, self.cutoff - 1, board.get_opponent_symbol(self.symbol), valid_moves[i])
+            cur_eval = self.minimax(emuBoard, self.cutoff-1, emuBoard.get_opponent_symbol(self.symbol), valid_moves[i])
             if max_val is None:
                 max_val = [cur_eval, valid_moves[i]]
             elif cur_eval > (max_val[0]):
@@ -105,11 +102,16 @@ class eMinimaxComputerPlayer:
         emuboard = copy.deepcopy(board)
         emuboard.make_move(emuboard.get_opponent_symbol(cur_symbol), last_move)
 
-        '''
-        The recursive base case along with where the evaluation is done and then returned up the recursive stack.
-        '''
+        #The recursive base case along with where the evulation is done and then returned up the recursive stack.
         if depth <= 0 or len(emuboard.calc_valid_moves(cur_symbol)) <= 0:
-            return self.evaluate(emuboard, cur_symbol, last_move);
+            initVal = emuboard.calc_scores()[cur_symbol]
+            if self.use_heuristic:
+                if ((last_move[0] == 0 or last_move[0] == (emuboard.get_size() - 1)) and (last_move[1] == 0 or last_move[1] == (emuboard.get_size() - 1))):
+                    initVal = initVal * 1.55
+                elif ((last_move[0] == 0 or last_move[0] == (emuboard.get_size() - 1)) or (last_move[1] == 0 or last_move[1] == (emuboard.get_size() - 1))):
+                    initVal = initVal * 1.35
+
+            return initVal
 
         eval = None
         valid_moves = emuboard.calc_valid_moves(cur_symbol);
@@ -124,17 +126,6 @@ class eMinimaxComputerPlayer:
                     eval = self.min_max_eval(eval, min_max_val, True)
         return eval
 
-    def evaluate(self, board, symbol, last_move):
-        eval = board.calc_scores()[symbol]
-        if self.use_heuristic:
-            if ((last_move[0] == 0 or last_move[0] == (board.get_size() - 1)) and (
-                    last_move[1] == 0 or last_move[1] == (board.get_size() - 1))):
-                eval = eval * 1.55
-            elif ((last_move[0] == 0 or last_move[0] == (board.get_size() - 1)) or (
-                    last_move[1] == 0 or last_move[1] == (board.get_size() - 1))):
-                eval = eval * 1.35
-        return eval;
-
     def min_max_eval(self, val1, val2, get_max):
         if get_max:
             if(val1 > val2):
@@ -146,3 +137,10 @@ class eMinimaxComputerPlayer:
                 return val1
             else:
                 return val2
+
+    #Greedy's evaluation
+    def evaulateState(self, board, move):
+        emuBoard = copy.deepcopy(board)
+        emuBoard.make_move(self.symbol, move)
+
+        return emuBoard.calc_scores()[self.symbol]
