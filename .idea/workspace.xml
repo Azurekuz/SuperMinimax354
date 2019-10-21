@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a66ebf5c-e237-46ee-94f4-d1b3a5197ffc" name="Default Changelist" comment="" />
+    <list default="true" id="a66ebf5c-e237-46ee-94f4-d1b3a5197ffc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/PROJECT 6.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PROJECT 6.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +91,7 @@
       <updated>1571168122056</updated>
       <workItem from="1571168123289" duration="1276000" />
       <workItem from="1571246343451" duration="715000" />
+      <workItem from="1571247487491" duration="820000" />
     </task>
     <servers />
   </component>
@@ -109,5 +114,6 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PROJECT_6$reversi02.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571246877178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
     <SUITE FILE_PATH="coverage/PROJECT_6$PROJECT_6.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571175924969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
+    <SUITE FILE_PATH="coverage/Project6$reversi02.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571247938238" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
   </component>
 </project>
