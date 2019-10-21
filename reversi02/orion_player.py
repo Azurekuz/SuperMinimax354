@@ -75,7 +75,7 @@ class oMinimaxComputerPlayer:
         self.thingsToEval = []
 
     def get_move(self, board):
-        evalDepth = 4
+        evalDepth = 3
         currentDepth = 0
         self.root = Node(None, board, None)
         self.thingsToEval.append(self.root)
