@@ -9,6 +9,8 @@ class QuiescentSearch(oMinimaxComputerPlayer):
         self.originalBoard = None;
 
     def get_move(self, board):
+        if(not self.use_quiet_search):
+            return super().get_move();
         self.originalBoard = board;
         evalDepth = 3
         currentDepth = 0
@@ -24,7 +26,7 @@ class QuiescentSearch(oMinimaxComputerPlayer):
             elif(len(validMoves) > 0 or currentDepth >= evalDepth or not workingNode.board.game_continues()):
                 self.thingsToEval.remove(workingNode)
                 self.evalNode(workingNode)
-                if (self.use_quiet_search and currentDepth >= evalDepth and self.check_quiet_iterative(workingNode)):
+                if (currentDepth >= evalDepth and self.check_quiet_iterative(workingNode)):
                     #print("Node not quiet")
                     workingNode.eval = self.quiet_search(workingNode.board, 3, workingNode.board.get_opponent_symbol(self.derive_symbol(workingNode.max, workingNode.board)));
                 #print("Node evaluated @ depth " + str(currentDepth) + ": " + str(workingNode.eval))

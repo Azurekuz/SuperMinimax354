@@ -10,6 +10,9 @@ from reversi02.eugenek_players import HumanPlayer, RandomComputerPlayer, GreedyC
 from reversi02.orion_player import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, oMinimaxComputerPlayer
 from reversi02.t_table_player import tTableMinimaxComputerPlayer
 from reversi02.quiescent_search import QuiescentSearch;
+from reversi02.alpha_beta_pruning import AlphaBetaPruning;
+from reversi02.lookup_table import lookup_table;
+
 class ReversiGame:
 
     def __init__(self, player1, player2, show_status=True, board_size=8, board_filename=None):
@@ -104,7 +107,7 @@ def get_player_a(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = dMiniMaxComputerPlayer(symbol, 4);
+    player = AlphaBetaPruning(symbol);
     return player;
 
 
@@ -114,7 +117,7 @@ def get_player_b(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = cMinimaxPlayer(symbol);
+    player = QuiescentSearch(symbol);
     return player;
 
 
@@ -133,10 +136,7 @@ def get_player_d(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    #player = oMinimaxComputerPlayer(symbol)
-    player = QuiescentSearch(symbol)
-    return player;
-
+    pass;
 
 def get_combined_player(symbol):
     """
@@ -145,8 +145,12 @@ def get_combined_player(symbol):
     pass
 
 def main():
-    compare_players(get_player_c("X"), get_default_player("O"), board_size=8, tests=4)
-
+    #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
+    print("")
+    #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
+    #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
+    compare_players(get_default_player("O"), get_player_b("X"), board_size=8)
+    print()
 
 if __name__ == "__main__":
     main()
