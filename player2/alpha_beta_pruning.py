@@ -18,7 +18,7 @@ class AlphaBetaPruning(oMinimaxComputerPlayer):
 
     def get_move(self, board):
         if(not self.use_ab_prune):
-            super().get_move(board);
+            return super().get_move(board);
         evalDepth = 4
         currentDepth = 0
         self.root = Node(None, board, None)
