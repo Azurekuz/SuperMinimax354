@@ -6,7 +6,7 @@ class ReversiBoard:
 
     def __init__(self, size=8, board_filename=None):
         if board_filename is None:
-            self._board = _getNewBoard(size)
+            self._board = _getNewBoard(size);
         else:
             self._board = _board_from_json(board_filename)
 
