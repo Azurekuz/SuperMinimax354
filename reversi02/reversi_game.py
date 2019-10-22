@@ -96,7 +96,6 @@ def get_default_player(symbol):
     """
     player = oMinimaxComputerPlayer(symbol);
     return player;
-    pass
 
 
 def get_player_a(symbol):
