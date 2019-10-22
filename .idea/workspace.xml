@@ -110,7 +110,12 @@
       <workItem from="1571439920559" duration="3519000" />
       <workItem from="1571592577099" duration="1004000" />
       <workItem from="1571598489447" duration="16634000" />
+<<<<<<< Updated upstream
 >>>>>>> bc286ac59a2fa1383f4c1783c252d2d5f5e9d673
+=======
+      <workItem from="1571677496784" duration="2705000" />
+      <workItem from="1571682723187" duration="9404000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
@@ -132,10 +137,14 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PROJECT_6$PROJECT_6.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571175924969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     <SUITE FILE_PATH="coverage/Project6$reversi02.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571247938238" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
 =======
     <SUITE FILE_PATH="coverage/PROJECT_6$reversi02.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571626846442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
 >>>>>>> bc286ac59a2fa1383f4c1783c252d2d5f5e9d673
+=======
+    <SUITE FILE_PATH="coverage/PROJECT_6$reversi02.coverage" NAME="reversi02 Coverage Results" MODIFIED="1571702924886" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/reversi02" />
+>>>>>>> Stashed changes
   </component>
 </project>

@@ -11,7 +11,7 @@ class QuiescentSearch(oMinimaxComputerPlayer):
 
     def get_move(self, board):
         self.originalBoard = board;
-        evalDepth = 4
+        evalDepth = 3
         currentDepth = 0
         self.root = Node(None, board, None)
         self.thingsToEval.append(self.root)
@@ -25,7 +25,7 @@ class QuiescentSearch(oMinimaxComputerPlayer):
             elif(len(validMoves) > 0 or currentDepth >= evalDepth or not workingNode.board.game_continues()):
                 self.thingsToEval.remove(workingNode)
                 self.evalNode(workingNode)
-                if (currentDepth >= evalDepth and self.check_quiet(workingNode)):
+                if (currentDepth >= evalDepth and self.check_quiet_iterative(workingNode)):
                     #print("Node not quiet")
                     workingNode.eval = self.quiet_search(workingNode.board, 3, workingNode.board.get_opponent_symbol(self.derive_symbol(workingNode.max, workingNode.board)));
                 #print("Node evaluated @ depth " + str(currentDepth) + ": " + str(workingNode.eval))
@@ -44,11 +44,18 @@ class QuiescentSearch(oMinimaxComputerPlayer):
         else:
             return board.get_opponent_symbol(self.symbol);
 
-    def check_quiet(self, workingNode):
+    def check_quiet_iterative(self, workingNode):
         cur_symbol = self.derive_symbol(workingNode.max, workingNode.board)
         first_node_eval = self.originalBoard.calc_scores();
         cur_node_eval = workingNode.board.calc_scores();
         if(cur_node_eval[cur_symbol] > cur_node_eval[workingNode.board.get_opponent_symbol(cur_symbol)]) != (first_node_eval[cur_symbol] > first_node_eval[workingNode.board.get_opponent_symbol(cur_symbol)]):
+            return True
+        return False
+
+    def check_quiet_recursive(self, board, cur_symbol):
+        first_node_eval = self.originalBoard.calc_scores();
+        cur_node_eval = board.calc_scores();
+        if (cur_node_eval[cur_symbol] > cur_node_eval[board.get_opponent_symbol(cur_symbol)]) != (first_node_eval[cur_symbol] > first_node_eval[board.get_opponent_symbol(cur_symbol)]):
             return True
         return False
 
@@ -57,7 +64,7 @@ class QuiescentSearch(oMinimaxComputerPlayer):
         if last_move != None:
             emuboard.make_move(emuboard.get_opponent_symbol(cur_symbol), last_move)
 
-        if depth <= 0 or len(emuboard.calc_valid_moves(cur_symbol)) <= 0:
+        if self.check_quiet_recursive(emuboard, cur_symbol) or depth <= 0 or len(emuboard.calc_valid_moves(cur_symbol)) <= 0:
             return board.calc_scores()[cur_symbol];
 
         eval = None
