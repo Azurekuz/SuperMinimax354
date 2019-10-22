@@ -6,12 +6,15 @@ from reversi_board import ReversiBoard
 
 class AlphaBetaPruning:
 
-    def __init__(self, symbol):
+    def __init__(self, symbol, uabp):
         self.symbol = symbol
+        self.use_ab_prune = uabp;
         self.root = None
         self.thingsToEval = []
 
     def get_move(self, board):
+        if(not self.use_ab_prune):
+            super().get_move(board);
         evalDepth = 4
         currentDepth = 0
         self.root = Node(None, board, None)

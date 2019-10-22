@@ -5,20 +5,20 @@ class lookup_table(oMinimaxComputerPlayer):
     def __init__(self, symbol):
         super().__init__(symbol)
         self.originalBoard = None;
-        self.valueBoardEight={[16, 8, 8, 0, 8, 8, 8, 16],
+        self.valueBoardEight=([16, 8, 8, 0, 8, 8, 8, 16],
                         [8, 8, 4, 4, 4, 4, 8, 8],
                         [8, 4, 4, 2, 2, 4, 4, 8],
                         [8, 4, 2, 0, 0, 2, 4, 8],
                         [8, 4, 2, 0, 0, 2, 4, 8],
                         [8, 4, 4, 2, 2, 4, 4, 8],
                         [8, 8, 4, 4, 4, 4, 8, 8],
-                        [16, 8, 8, 8, 8, 8, 8, 16]}
+                        [16, 8, 8, 8, 8, 8, 8, 16])
 
     def get_move(self, board):
-        return oMinimaxComputerPlayer.get_move()
+        return oMinimaxComputerPlayer.get_move(self,board)
 
     def genBoard(self, workingNode, validMoves):
-        return oMinimaxComputerPlayer.genBoard()
+        return oMinimaxComputerPlayer.genBoard(self,workingNode, validMoves)
 
     def getValidMoves(self, workingNode):
         if (workingNode.max):
@@ -30,14 +30,18 @@ class lookup_table(oMinimaxComputerPlayer):
         if(len(node.children) == 0):
             score = node.board.calc_scores()[self.symbol]
             node.eval = score
-            valueBoardScore = self.valueBoardEight[node.children.move[0]][node.children.move[1]]
-        else:
+            #valueBoardScore = self.valueBoardEight[node.move[0]][node.move[1]]
+        elif(node.parent is not None):
             if(node.max):
-                valueBoardScore = self.valueBoardEight[node.children.move[0]][node.children.move[1]]
+                valuex = int(node.move[0])
+                valuey = int(node.move[1])
+                valueBoardScore = self.valueBoardEight[valuex][valuey]
                 node.eval += valueBoardScore
                 node.eval = self.max(node.children)
             else:
-                valueBoardScore = self.valueBoardEight[node.children.move[0]][node.children.move[1]]
+                valuex = int(node.move[0])
+                valuey = int(node.move[1])
+                valueBoardScore = self.valueBoardEight[valuex][valuey]
                 node.eval -= valueBoardScore
                 node.eval = self.min(node.children)
 
