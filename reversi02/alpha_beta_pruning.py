@@ -3,14 +3,18 @@
 import random
 import copy
 from reversi_board import ReversiBoard
+from reversi02.orion_player import oMinimaxComputerPlayer;
 
-class AlphaBetaPruning:
+class AlphaBetaPruning(oMinimaxComputerPlayer):
 
-    def __init__(self, symbol, uabp):
+    def __init__(self, symbol, uabp=False):
+        super().__init__(symbol);
+        '''
         self.symbol = symbol
-        self.use_ab_prune = uabp;
         self.root = None
         self.thingsToEval = []
+        '''
+        self.use_ab_prune = uabp;
 
     def get_move(self, board):
         if(not self.use_ab_prune):

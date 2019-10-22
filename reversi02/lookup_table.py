@@ -2,17 +2,17 @@ from orion_player import oMinimaxComputerPlayer
 
 
 class lookup_table(oMinimaxComputerPlayer):
-    def __init__(self, symbol):
+    def __init__(self, symbol, ult=False):
         super().__init__(symbol)
-        self.originalBoard = None;
+        self.use_lookup_table = ult
         self.valueBoardEight=([16, 8, 8, 0, 8, 8, 8, 16],
-                        [8, 8, 4, 4, 4, 4, 8, 8],
-                        [8, 4, 4, 2, 2, 4, 4, 8],
-                        [8, 4, 2, 0, 0, 2, 4, 8],
-                        [8, 4, 2, 0, 0, 2, 4, 8],
-                        [8, 4, 4, 2, 2, 4, 4, 8],
-                        [8, 8, 4, 4, 4, 4, 8, 8],
-                        [16, 8, 8, 8, 8, 8, 8, 16])
+                                [8, 8, 4, 4, 4, 4, 8, 8],
+                                [8, 4, 4, 2, 2, 4, 4, 8],
+                                [8, 4, 2, 0, 0, 2, 4, 8],
+                                [8, 4, 2, 0, 0, 2, 4, 8],
+                                [8, 4, 4, 2, 2, 4, 4, 8],
+                                [8, 8, 4, 4, 4, 4, 8, 8],
+                                [16, 8, 8, 8, 8, 8, 8, 16])
 
     def get_move(self, board):
         return oMinimaxComputerPlayer.get_move(self,board)
@@ -27,6 +27,9 @@ class lookup_table(oMinimaxComputerPlayer):
             return workingNode.board.calc_valid_moves(workingNode.board.get_opponent_symbol(self.symbol))
 
     def evalNode(self, node):
+        if(not self.use_lookup_table):
+            super().evalNode(node)
+            return
         if(len(node.children) == 0):
             score = node.board.calc_scores()[self.symbol]
             node.eval = score

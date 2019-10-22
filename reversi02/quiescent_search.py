@@ -1,11 +1,9 @@
 #Made by Eugene Kuznetsov
-import random
 import copy
-from collections import deque
 from orion_player import oMinimaxComputerPlayer, Node
 
 class QuiescentSearch(oMinimaxComputerPlayer):
-    def __init__(self, symbol, uqs):
+    def __init__(self, symbol, uqs=False):
         super().__init__(symbol)
         self.use_quiet_search = uqs
         self.originalBoard = None;
