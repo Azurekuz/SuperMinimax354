@@ -8,6 +8,7 @@ from reversi02.desmondl_players import HumanPlayer, RandomComputerPlayer, GreedC
 from reversi02.cobi_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, cMinimaxPlayer
 from reversi02.eugenek_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, eMinimaxComputerPlayer
 from reversi02.orion_player import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, oMinimaxComputerPlayer
+from reversi02.t_table_player import tTableMinimaxComputerPlayer
 from reversi02.quiescent_search import QuiescentSearch;
 class ReversiGame:
 
@@ -69,21 +70,23 @@ def print_scores(score_map):
     print()
 
 
-def compare_players(player1, player2, board_size=8, board_filename=None):
-    game_count_map = {player1.symbol: 0, player2.symbol: 0, "TIE": 0}
-    time_elapsed_map = {player1.symbol: 0, player2.symbol: 0}
-    for i in range(1, 11):
-        if i % 1 == 0:
+def compare_players(player1, player2, board_size=8, board_filename=None, tests=10):
+    game_count_map = {"X": 0, "O": 0, "TIE": 0}
+    time_elapsed_map = {"X": 0, "O": 0}
+    for i in range(1, tests + 1):
+        if i % 100 == 0:
             print(i, "games finished")
-            pass
-        if (i % 2 != 0):
-            game = ReversiGame(player1, player2, show_status=False, board_size=board_size, board_filename=board_filename)
-        elif (i % 2 == 0):
-            game = ReversiGame(player2, player1, show_status=False, board_size=board_size, board_filename=board_filename)
-        game_count_map[game.calc_winner()] += 1
-        decision_times = game.get_decision_times()
-        for symbol in decision_times:
-            time_elapsed_map[symbol] += decision_times[symbol]
+        if (i % 2 == 0):
+            game = ReversiGame(player1, player2, show_status=True, board_size=board_size, board_filename=board_filename)
+        else:
+            game = ReversiGame(player2, player1, show_status=True, board_size=board_size, board_filename=board_filename)
+        winner = game.calc_winner()
+        game_count_map[winner] += 1
+        for symbol in game.get_decision_times():
+            time_elapsed_map[symbol] += game.get_decision_times()[symbol]
+
+    print(player1.symbol + ": " + player1.__name__())
+    print(player2.symbol + ": " + player2.__name__())
     print(game_count_map)
     print(time_elapsed_map)
 
@@ -91,7 +94,8 @@ def get_default_player(symbol):
     """
     :returns: a default minimax player that can operate successfully on a given 8x8 board
     """
-    pass
+    player = oMinimaxComputerPlayer(symbol, 3, uh=False)
+    return player
 
 
 def get_player_a(symbol):
@@ -120,8 +124,7 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = eMinimaxComputerPlayer(symbol, 3, True)
-    #player = oMinimaxComputerPlayer(symbol);
+    player = tTableMinimaxComputerPlayer(symbol, 10, utt=True, uh=False);
     return player;
 
 def get_player_d(symbol):
@@ -142,11 +145,8 @@ def get_combined_player(symbol):
     pass
 
 def main():
-    #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
-    print("")
-    for i in range(0, 2):
-        compare_players(get_player_d("X"), get_player_c("O"), board_size=8)
-        print()
+    compare_players(get_player_c("X"), get_default_player("O"), board_size=8, tests=4)
+
 
 if __name__ == "__main__":
     main()

@@ -19,6 +19,9 @@ class ReversiBoard:
     def calc_scores(self):
         return _getScoreOfBoard(self._board)
 
+    def calc_heuristic(self):
+        return _getHeuristicOfBoard(self._board)
+
     def make_move(self, symbol, position):
         return _makeMove(self._board, symbol, position[0], position[1])
 
@@ -44,6 +47,106 @@ class ReversiBoard:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(self._board, f, ensure_ascii=False)
 
+    def flip_vertical(self):
+        b = ReversiBoard(len(self._board))
+        b._board = flipV(self._board)
+        return b
+
+    def flip_horizontal(self):
+        b = ReversiBoard(len(self._board))
+        b._board = flipH(self._board)
+        return b
+
+    def flip_diagonal_tr_bl(self):
+        b = ReversiBoard(len(self._board))
+        b._board = flipTRBL(self._board)
+        return b
+
+    def flip_diagonal_tl_br(self):
+        b = ReversiBoard(len(self._board))
+        b._board = flipTLBR(self._board)
+        return b
+
+    def rotate_clockwise(self):
+        b = ReversiBoard(len(self._board))
+        b._board = rotCW(self._board)
+        return b
+
+    def rotate_counterclockwise(self):
+        b = ReversiBoard(len(self._board))
+        b._board = rotCCW(self._board)
+        return b
+
+    def rotate_around(self):
+        b = ReversiBoard(len(self._board))
+        b._board = rot180(self._board)
+        return b
+
+    def __hash__(self):
+        return hash(str(self._board))
+
+    def __eq__(self, other):
+        return self._board == other._board
+
+    def __ne__(self, other):
+        return not (self == other)
+
+
+def flipH(board):
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][j] = board[i][j]
+    return newBoard
+
+def flipV(board):
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[i][size - 1 - j] = board[i][j]
+    return newBoard
+
+def flipTRBL(board):
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[i][j] = board[j][i]
+    return newBoard
+
+def flipTLBR(board):
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][size - 1 - j] = board[j][i]
+    return newBoard
+
+def rotCW(board):
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][j] = board[j][i]
+    return newBoard
+
+def rotCCW(board):
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[i][size - 1 - j] = board[j][i]
+    return newBoard
+
+def rot180(board):
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][size - 1 - j] = board[i][j]
+    return newBoard
 
 def _getNewBoard(size):
     # Creates a brand new, blank board data structure.
@@ -157,6 +260,28 @@ def _getScoreOfBoard(board):
                 xscore += 1
             if board[x][y] == 'O':
                 oscore += 1
+    return {'X':xscore, 'O':oscore}
+
+def _getHeuristicOfBoard(board):
+    # Determine the heuristic by counting the tiles. Returns a dictionary with keys 'X' and 'O'.
+    xscore = 0
+    oscore = 0
+    for x in range(len(board)):
+        for y in range(len(board)):
+            if board[x][y] == 'X':
+                if x==0 and y==0:
+                    xscore += 5
+                elif x==0 or y==0:
+                    xscore += 2
+                else:
+                    xscore += 1
+            if board[x][y] == 'O':
+                if x == 0 and y == 0:
+                    oscore += 5
+                elif x == 0 or y == 0:
+                    oscore += 2
+                else:
+                    oscore += 1
     return {'X':xscore, 'O':oscore}
 
 def _board_from_json(board_filename):
