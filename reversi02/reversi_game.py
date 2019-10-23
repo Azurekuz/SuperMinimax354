@@ -3,15 +3,7 @@
 import copy
 from datetime import datetime
 from reversi02.reversi_board import ReversiBoard
-import all_players;
-from reversi02.desmondl_players import HumanPlayer, RandomComputerPlayer, GreedComputerPlayer,  dMiniMaxComputerPlayer
-from reversi02.cobi_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, cMinimaxPlayer
-from reversi02.eugenek_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, eMinimaxComputerPlayer
-from reversi02.orion_player import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, oMinimaxComputerPlayer
-from reversi02.t_table_player import tTableMinimaxComputerPlayer
-from reversi02.quiescent_search import QuiescentSearch;
-from reversi02.alpha_beta_pruning import AlphaBetaPruning;
-from reversi02.lookup_table import lookup_table;
+from all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player
 
 class ReversiGame:
 
@@ -93,64 +85,13 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=1
     print(game_count_map)
     print(time_elapsed_map)
 
-def get_default_player(symbol):
-    """
-    :returns: a default minimax player that can operate successfully on a given 8x8 board
-    """
-    player = oMinimaxComputerPlayer(symbol, 3, uh=False)
-    return player
-
-
-def get_player_a(symbol):
-    """
-    :author:
-    :enchancement:
-    :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
-    """
-    player = AlphaBetaPruning(symbol);
-    return player;
-
-
-def get_player_b(symbol):
-    """
-    :author:
-    :enchancement:
-    :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
-    """
-    player = QuiescentSearch(symbol);
-    return player;
-
-
-def get_player_c(symbol):
-    """
-    :author:
-    :enchancement:
-    :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
-    """
-    player = tTableMinimaxComputerPlayer(symbol, 10, utt=True, uh=False);
-    return player;
-
-def get_player_d(symbol):
-    """
-    :author:
-    :enchancement:
-    :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
-    """
-    pass;
-
-def get_combined_player(symbol):
-    """
-    :returns: the best combination of the minimax enhancements that your team can create
-    """
-    pass
-
 def main():
     #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
     print("")
     #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
     #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
-    compare_players(get_default_player("O"), get_player_b("X"), board_size=8)
-    print()
+    #compare_players(get_default_player("O"), get_player_b("X"), board_size=8)
+    compare_players(get_player_c("O"), get_default_player("X"), board_size=8, tests=4)
 
 if __name__ == "__main__":
     main()

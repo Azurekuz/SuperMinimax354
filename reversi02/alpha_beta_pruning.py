@@ -3,9 +3,9 @@
 import random
 import copy
 from reversi_board import ReversiBoard
-from reversi02.orion_player import oMinimaxComputerPlayer;
+from reversi02.orion_player import MinimaxComputerPlayer;
 
-class AlphaBetaPruning(oMinimaxComputerPlayer):
+class AlphaBetaPruning(MinimaxComputerPlayer):
 
     def __init__(self, symbol, uabp=False):
         super().__init__(symbol);

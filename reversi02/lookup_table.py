@@ -1,7 +1,7 @@
-from orion_player import oMinimaxComputerPlayer
+from orion_player import MinimaxComputerPlayer
 
 
-class lookup_table(oMinimaxComputerPlayer):
+class LookupTable(MinimaxComputerPlayer):
     def __init__(self, symbol, ult=False):
         super().__init__(symbol)
         self.use_lookup_table = ult
