@@ -152,14 +152,14 @@ def main():
     print("")
     #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
     #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
-<<<<<<< HEAD
-    compare_players(get_default_player("O"), get_player_c("X"), board_size=8)
+#<<<<<<< HEAD
+    compare_players(get_player_d("O"), get_default_player("X"), board_size=8)
     #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
-    print()
+    #print()
 
-=======
-    compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
+#=======
+    #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
     #get_combined_player("X")
->>>>>>> 6d53e1892bc879ac316892f81ab96593c3e0c241
+#>>>>>>> 6d53e1892bc879ac316892f81ab96593c3e0c241
 if __name__ == "__main__":
     main()
