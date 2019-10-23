@@ -28,7 +28,7 @@ class HumanPlayer:
             else:
                 print('Bad input. Type valid x digit, then the y digit.')
 
-    def __str__(self):
+    def __name__(self):
         return "Human Player"
 
 
@@ -40,7 +40,7 @@ class RandomComputerPlayer:
     def get_move(self, board):
         return random.choice(board.calc_valid_moves(self.symbol))
 
-    def __str__(self):
+    def __name__(self):
         return "Random Player"
 
 
@@ -64,18 +64,19 @@ class GreedyComputerPlayer:
     def evalBoard(self, board):
         return board.calc_scores()[self.symbol]
 
-    def __str__(self):
+    def __name__(self):
         return "Greedy Player"
 
 class oMinimaxComputerPlayer:
 
-    def __init__(self, symbol):
+    def __init__(self, symbol, depth, uh=False):
         self.symbol = symbol
         self.root = None
         self.thingsToEval = []
+        self.evalDepth = depth
+        self.useHeuristic = uh
 
     def get_move(self, board):
-        evalDepth = 3
         currentDepth = 0
         self.root = Node(None, board, None)
         self.thingsToEval.append(self.root)
@@ -83,10 +84,10 @@ class oMinimaxComputerPlayer:
         while (evalLen > 0):
             workingNode = self.thingsToEval[evalLen - 1]
             validMoves = self.getValidMoves(workingNode)
-            if(len(workingNode.children) < len(validMoves) and currentDepth < evalDepth):
+            if(len(workingNode.children) < len(validMoves) and currentDepth < self.evalDepth):
                 self.genBoard(workingNode, validMoves)
                 currentDepth += 1
-            elif(len(validMoves) > 0 or currentDepth >= evalDepth or not workingNode.board.game_continues()):
+            elif(len(validMoves) > 0 or currentDepth >= self.evalDepth or not workingNode.board.game_continues()):
                 self.thingsToEval.remove(workingNode)
                 self.evalNode(workingNode)
                 #print("Node evaluated @ depth " + str(currentDepth) + ": " + str(workingNode.eval))
@@ -118,7 +119,10 @@ class oMinimaxComputerPlayer:
 
     def evalNode(self, node):
         if(len(node.children) == 0):
-            score = node.board.calc_scores()[self.symbol]
+            if (self.useHeuristic):
+                score = node.board.calc_heuristic()[self.symbol]
+            else:
+                score = node.board.calc_scores()[self.symbol]
             node.eval = score
         else:
             if(node.max):
@@ -127,20 +131,20 @@ class oMinimaxComputerPlayer:
                 node.eval = self.min(node.children)
 
     def max(self, children):
-        max = 0
+        max = -110
         for c in children:
             if(c.eval > max):
                 max = c.eval
         return max
 
     def min(self, children):
-        min = 64
+        min = 110
         for c in children:
             if(c.eval < min):
                 min = c.eval
         return min
 
-    def __str__(self):
+    def __name__ (self):
         return "Minimax Player"
 
 
