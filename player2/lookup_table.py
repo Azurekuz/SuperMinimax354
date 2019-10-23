@@ -1,4 +1,4 @@
-from orion_player import oMinimaxComputerPlayer
+from player2.orion_player import oMinimaxComputerPlayer
 
 
 class lookup_table(oMinimaxComputerPlayer):

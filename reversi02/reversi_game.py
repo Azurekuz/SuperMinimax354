@@ -3,7 +3,6 @@
 import copy
 from datetime import datetime
 from reversi02.reversi_board import ReversiBoard
-<<<<<<< HEAD
 from player2 import all_players, alpha_beta_pruning, combinedAgent, lookup_table, orion_player, quiescent_search, t_table_player;
 '''
 from reversi02.desmondl_players import HumanPlayer, RandomComputerPlayer, GreedComputerPlayer,  dMiniMaxComputerPlayer
@@ -15,9 +14,6 @@ from reversi02.quiescent_search import QuiescentSearch;
 from reversi02.alpha_beta_pruning import AlphaBetaPruning;
 from reversi02.lookup_table import lookup_table;
 '''
-=======
-from all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player
->>>>>>> master
 
 class ReversiGame:
 
@@ -99,7 +95,6 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=1
     print(game_count_map)
     print(time_elapsed_map)
 
-<<<<<<< HEAD
 def get_default_player(symbol):
     """
     :returns: a default minimax player that can operate successfully on a given 8x8 board
@@ -151,20 +146,13 @@ def get_combined_player(symbol):
     """
     return combinedAgent.CombinedAgent(symbol)
 
-=======
->>>>>>> master
+
 def main():
     #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
     print("")
     #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
     #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
-<<<<<<< HEAD
-    compare_players(get_player_b("O"), get_combined_player("X"), board_size=8)
-    print()
-=======
-    #compare_players(get_default_player("O"), get_player_b("X"), board_size=8)
-    compare_players(get_player_c("O"), get_default_player("X"), board_size=8, tests=4)
->>>>>>> master
-
+    compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
+    #get_combined_player("X")
 if __name__ == "__main__":
     main()

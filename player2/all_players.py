@@ -1,4 +1,4 @@
-from player2 import orion_player, quiescent_search, lookup_table, alpha_beta_pruning, t_table_player, combinedAgent
+from player2 import orion_player, quiescent_search, lookup_table, alpha_beta_pruning, t_table_player, combinedAgent, transposition_table
 def get_default_player(symbol):
     """
     :returns: a default minimax player that can operate successfully on a given 8x8 board
@@ -38,7 +38,7 @@ def get_player_d(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    return t_table_player(symbol)
+    return transposition_table.TranspositionTable(symbol)
 
 
 def get_combined_player(symbol):

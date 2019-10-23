@@ -1,20 +1,21 @@
-from player2 import orion_player, lookup_table, alpha_beta_pruning, quiescent_search, t_table_player
+from player2 import orion_player, lookup_table, alpha_beta_pruning, quiescent_search, transposition_table
 
 
 class CombinedAgent(orion_player.oMinimaxComputerPlayer):
     def __init__(self, symbol):
         super().__init__(symbol, 3, True)
-        self.ab_prune = alpha_beta_pruning.AlphaBetaPruning(symbol, True)
+        self.ab_prune = alpha_beta_pruning.AlphaBetaPruning(symbol, False)
         self.lookup_table = lookup_table.lookup_table(symbol, True)
         self.quiet_search = quiescent_search.QuiescentSearch(symbol, True)
-        self.t_table = t_table_player.tTableMinimaxComputerPlayer(symbol, 3, True, True)
+        #self.t_table = t_table_player.tTableMinimaxComputerPlayer(symbol, 3, True, True)
+        self.t_table = transposition_table.TranspositionTable(symbol, 3, True, True)
         self.originalBoard = None
 
     def get_move(self, board):
         self.originalBoard = board
         currentDepth = 0
         if self.t_table.useTTable:
-            self.root = t_table_player.Node(None, board, None, self.t_table.movesTaken * 2)
+            self.root = transposition_table.Node(None, board, None, self.t_table.movesTaken * 2)
         else:
             self.root = orion_player.Node(None, board, None)
         if self.t_table.useTTable and board in self.t_table.tTable and self.t_table.tTable[board][1] >= self.evalDepth + self.root.depth:
