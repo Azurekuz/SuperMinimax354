@@ -1,24 +1,24 @@
-from orion_player import oMinimaxComputerPlayer
+from player2.orion_player import oMinimaxComputerPlayer
 
 
 class lookup_table(oMinimaxComputerPlayer):
-    def __init__(self, symbol):
-        super().__init__(symbol)
-        self.originalBoard = None;
-        self.valueBoardEight={[16, 8, 8, 0, 8, 8, 8, 16],
-                        [8, 8, 4, 4, 4, 4, 8, 8],
-                        [8, 4, 4, 2, 2, 4, 4, 8],
-                        [8, 4, 2, 0, 0, 2, 4, 8],
-                        [8, 4, 2, 0, 0, 2, 4, 8],
-                        [8, 4, 4, 2, 2, 4, 4, 8],
-                        [8, 8, 4, 4, 4, 4, 8, 8],
-                        [16, 8, 8, 8, 8, 8, 8, 16]}
+    def __init__(self, symbol, ult=False):
+        super().__init__(symbol, 3)
+        self.use_lookup_table = ult
+        self.valueBoardEight=([16, 8, 8, 0, 8, 8, 8, 16],
+                                [8, 8, 4, 4, 4, 4, 8, 8],
+                                [8, 4, 4, 2, 2, 4, 4, 8],
+                                [8, 4, 2, 0, 0, 2, 4, 8],
+                                [8, 4, 2, 0, 0, 2, 4, 8],
+                                [8, 4, 4, 2, 2, 4, 4, 8],
+                                [8, 8, 4, 4, 4, 4, 8, 8],
+                                [16, 8, 8, 8, 8, 8, 8, 16])
 
     def get_move(self, board):
-        return oMinimaxComputerPlayer.get_move()
+        return oMinimaxComputerPlayer.get_move(self,board)
 
     def genBoard(self, workingNode, validMoves):
-        return oMinimaxComputerPlayer.genBoard()
+        return oMinimaxComputerPlayer.genBoard(self,workingNode, validMoves)
 
     def getValidMoves(self, workingNode):
         if (workingNode.max):
@@ -27,31 +27,38 @@ class lookup_table(oMinimaxComputerPlayer):
             return workingNode.board.calc_valid_moves(workingNode.board.get_opponent_symbol(self.symbol))
 
     def evalNode(self, node):
+        if(not self.use_lookup_table):
+            super().evalNode(node)
+            return
         if(len(node.children) == 0):
             score = node.board.calc_scores()[self.symbol]
             node.eval = score
-            valueBoardScore = self.valueBoardEight[node.children.move[0]][node.children.move[1]]
-        else:
+            #valueBoardScore = self.valueBoardEight[node.move[0]][node.move[1]]
+        elif(node.parent is not None):
             if(node.max):
-                valueBoardScore = self.valueBoardEight[node.children.move[0]][node.children.move[1]]
+                valuex = int(node.move[0])
+                valuey = int(node.move[1])
+                valueBoardScore = self.valueBoardEight[valuex][valuey]
                 node.eval += valueBoardScore
                 node.eval = self.max(node.children)
             else:
-                valueBoardScore = self.valueBoardEight[node.children.move[0]][node.children.move[1]]
+                valuex = int(node.move[0])
+                valuey = int(node.move[1])
+                valueBoardScore = self.valueBoardEight[valuex][valuey]
                 node.eval -= valueBoardScore
                 node.eval = self.min(node.children)
 
 
 
     def max(self, children):
-        max = 0
+        max = children[0]
         for c in children:
             if(c.eval > max):
                 max = c.eval
         return max
 
     def min(self, children):
-        min = 64
+        min = children[0]
         for c in children:
             if(c.eval < min):
                 min = c.eval

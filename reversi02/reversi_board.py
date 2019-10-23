@@ -19,6 +19,9 @@ class ReversiBoard:
     def calc_scores(self):
         return _getScoreOfBoard(self._board)
 
+    def calc_heuristic(self):
+        return _getHeuristicOfBoard(self._board)
+
     def make_move(self, symbol, position):
         return _makeMove(self._board, symbol, position[0], position[1])
 
@@ -44,6 +47,8 @@ class ReversiBoard:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(self._board, f, ensure_ascii=False)
 
+    def __hash__(self):
+        return hash(str(self._board))
 
 def _getNewBoard(size):
     # Creates a brand new, blank board data structure.
@@ -157,6 +162,28 @@ def _getScoreOfBoard(board):
                 xscore += 1
             if board[x][y] == 'O':
                 oscore += 1
+    return {'X':xscore, 'O':oscore}
+
+def _getHeuristicOfBoard(board):
+    # Determine the heuristic by counting the tiles. Returns a dictionary with keys 'X' and 'O'.
+    xscore = 0
+    oscore = 0
+    for x in range(len(board)):
+        for y in range(len(board)):
+            if board[x][y] == 'X':
+                if x==0 and y==0:
+                    xscore += 5
+                elif x==0 or y==0:
+                    xscore += 2
+                else:
+                    xscore += 1
+            if board[x][y] == 'O':
+                if x == 0 and y == 0:
+                    oscore += 5
+                elif x == 0 or y == 0:
+                    oscore += 2
+                else:
+                    oscore += 1
     return {'X':xscore, 'O':oscore}
 
 def _board_from_json(board_filename):

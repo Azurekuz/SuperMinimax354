@@ -1,17 +1,17 @@
 #Made by Eugene Kuznetsov
-import random
 import copy
-from collections import deque
-from orion_player import oMinimaxComputerPlayer, Node
+from player2.orion_player import oMinimaxComputerPlayer, Node
 
 class QuiescentSearch(oMinimaxComputerPlayer):
-    def __init__(self, symbol):
-        super().__init__(symbol)
+    def __init__(self, symbol, uqs=False):
+        super().__init__(symbol, 3)
+        self.use_quiet_search = uqs
         self.originalBoard = None;
 
     def get_move(self, board):
+        if(not self.use_quiet_search):
+            return super().get_move(board);
         self.originalBoard = board;
-        evalDepth = 3
         currentDepth = 0
         self.root = Node(None, board, None)
         self.thingsToEval.append(self.root)
@@ -19,13 +19,13 @@ class QuiescentSearch(oMinimaxComputerPlayer):
         while (evalLen > 0):
             workingNode = self.thingsToEval[evalLen - 1]
             validMoves = self.getValidMoves(workingNode)
-            if(len(workingNode.children) < len(validMoves) and currentDepth < evalDepth):
+            if(len(workingNode.children) < len(validMoves) and currentDepth < self.evalDepth):
                 self.genBoard(workingNode, validMoves)
                 currentDepth += 1
-            elif(len(validMoves) > 0 or currentDepth >= evalDepth or not workingNode.board.game_continues()):
+            elif(len(validMoves) > 0 or currentDepth >= self.evalDepth or not workingNode.board.game_continues()):
                 self.thingsToEval.remove(workingNode)
                 self.evalNode(workingNode)
-                if (currentDepth >= evalDepth and self.check_quiet_iterative(workingNode)):
+                if (currentDepth >= self.evalDepth and self.check_quiet_iterative(workingNode)):
                     #print("Node not quiet")
                     workingNode.eval = self.quiet_search(workingNode.board, 3, workingNode.board.get_opponent_symbol(self.derive_symbol(workingNode.max, workingNode.board)));
                 #print("Node evaluated @ depth " + str(currentDepth) + ": " + str(workingNode.eval))
