@@ -1,73 +1,8 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
-import random
 import copy
 from reversi_board import ReversiBoard
 
-class HumanPlayer:
-
-    def __init__(self, symbol):
-        self.symbol = symbol
-
-    def get_move(self, board):
-        # Let the player type in their move.
-        # Returns the move as [x, y] (or returns the strings 'hints' or 'quit')
-        valid_digits = []
-        for i in range(1, board.get_size()+1):
-            valid_digits.append(str(i))
-        no_valid_move = True
-        while no_valid_move:
-            move = input(self.symbol + ', enter your move:').lower()
-            if len(move) == 2 and move[0] in valid_digits and move[1] in valid_digits:
-                x = int(move[0]) - 1
-                y = int(move[1]) - 1
-                if board.is_valid_move(self.symbol, ( x, y) ):
-                    no_valid_move = False
-                    return [x, y]
-                else:
-                    print('Not a valid move.')
-            else:
-                print('Bad input. Type valid x digit, then the y digit.')
-
-    def __name__(self):
-        return "Human Player"
-
-
-class RandomComputerPlayer:
-
-    def __init__(self, symbol):
-        self.symbol = symbol
-
-    def get_move(self, board):
-        return random.choice(board.calc_valid_moves(self.symbol))
-
-    def __name__(self):
-        return "Random Player"
-
-
-class GreedyComputerPlayer:
-
-    def __init__(self, symbol):
-        self.symbol = symbol
-
-    def get_move(self, board):
-        highestScore = 0
-        bestMove = (-1,-1)
-        validMoves = board.calc_valid_moves(self.symbol)
-        for move in validMoves:
-            workingBoard = copy.deepcopy(board)
-            workingBoard.make_move(self.symbol, move)
-            if(self.evalBoard(workingBoard) > highestScore):
-                highestScore = self.evalBoard(workingBoard)
-                bestMove = move
-        return bestMove
-
-    def evalBoard(self, board):
-        return board.calc_scores()[self.symbol]
-
-    def __name__(self):
-        return "Greedy Player"
-
-class oMinimaxComputerPlayer:
+class MinimaxComputerPlayer:
 
     def __init__(self, symbol, depth, uh=False):
         self.symbol = symbol

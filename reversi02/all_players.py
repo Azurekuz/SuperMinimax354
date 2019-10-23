@@ -1,8 +1,16 @@
+from orion_player import MinimaxComputerPlayer
+from alpha_beta_pruning import AlphaBetaPruning
+from quiescent_search import QuiescentSearch
+from transposition_table import TranspositionTable
+from lookup_table import LookupTable
+#from master_agent import MasterAgent
+
 def get_default_player(symbol):
     """
     :returns: a default minimax player that can operate successfully on a given 8x8 board
     """
-    pass
+    player = MinimaxComputerPlayer(symbol, 3)
+    return player
 
 
 def get_player_a(symbol):
@@ -11,7 +19,8 @@ def get_player_a(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    pass
+    player = AlphaBetaPruning(symbol);
+    return player;
 
 
 def get_player_b(symbol):
@@ -20,7 +29,8 @@ def get_player_b(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    pass
+    player = QuiescentSearch(symbol);
+    return player;
 
 
 def get_player_c(symbol):
@@ -29,8 +39,8 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    pass
-
+    player = TranspositionTable(symbol, 3, utt=True);
+    return player;
 
 def get_player_d(symbol):
     """
@@ -38,8 +48,7 @@ def get_player_d(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    pass
-
+    pass;
 
 def get_combined_player(symbol):
     """

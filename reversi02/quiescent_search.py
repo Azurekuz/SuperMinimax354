@@ -1,8 +1,8 @@
 #Made by Eugene Kuznetsov
 import copy
-from orion_player import oMinimaxComputerPlayer, Node
+from orion_player import MinimaxComputerPlayer, Node
 
-class QuiescentSearch(oMinimaxComputerPlayer):
+class QuiescentSearch(MinimaxComputerPlayer):
     def __init__(self, symbol, uqs=False):
         super().__init__(symbol)
         self.use_quiet_search = uqs
