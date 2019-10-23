@@ -3,7 +3,7 @@ from orion_player import oMinimaxComputerPlayer
 
 class lookup_table(oMinimaxComputerPlayer):
     def __init__(self, symbol, ult=False):
-        super().__init__(symbol)
+        super().__init__(symbol, 3)
         self.use_lookup_table = ult
         self.valueBoardEight=([16, 8, 8, 0, 8, 8, 8, 16],
                                 [8, 8, 4, 4, 4, 4, 8, 8],
@@ -51,14 +51,14 @@ class lookup_table(oMinimaxComputerPlayer):
 
 
     def max(self, children):
-        max = 0
+        max = children[0]
         for c in children:
             if(c.eval > max):
                 max = c.eval
         return max
 
     def min(self, children):
-        min = 64
+        min = children[0]
         for c in children:
             if(c.eval < min):
                 min = c.eval

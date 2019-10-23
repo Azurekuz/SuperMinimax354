@@ -3,7 +3,8 @@
 import copy
 from datetime import datetime
 from reversi02.reversi_board import ReversiBoard
-import all_players;
+from player2 import all_players, alpha_beta_pruning, combinedAgent, lookup_table, orion_player, quiescent_search, t_table_player;
+'''
 from reversi02.desmondl_players import HumanPlayer, RandomComputerPlayer, GreedComputerPlayer,  dMiniMaxComputerPlayer
 from reversi02.cobi_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, cMinimaxPlayer
 from reversi02.eugenek_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, eMinimaxComputerPlayer
@@ -12,6 +13,7 @@ from reversi02.t_table_player import tTableMinimaxComputerPlayer
 from reversi02.quiescent_search import QuiescentSearch;
 from reversi02.alpha_beta_pruning import AlphaBetaPruning;
 from reversi02.lookup_table import lookup_table;
+'''
 
 class ReversiGame:
 
@@ -77,12 +79,12 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=1
     game_count_map = {"X": 0, "O": 0, "TIE": 0}
     time_elapsed_map = {"X": 0, "O": 0}
     for i in range(1, tests + 1):
-        if i % 100 == 0:
+        if i % 1 == 0:
             print(i, "games finished")
         if (i % 2 == 0):
-            game = ReversiGame(player1, player2, show_status=True, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player1, player2, show_status=False, board_size=board_size, board_filename=board_filename)
         else:
-            game = ReversiGame(player2, player1, show_status=True, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player2, player1, show_status=False, board_size=board_size, board_filename=board_filename)
         winner = game.calc_winner()
         game_count_map[winner] += 1
         for symbol in game.get_decision_times():
@@ -97,7 +99,7 @@ def get_default_player(symbol):
     """
     :returns: a default minimax player that can operate successfully on a given 8x8 board
     """
-    player = oMinimaxComputerPlayer(symbol, 3, uh=False)
+    player = orion_player.oMinimaxComputerPlayer(symbol, 3, uh=False)
     return player
 
 
@@ -107,7 +109,7 @@ def get_player_a(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = AlphaBetaPruning(symbol);
+    player = alpha_beta_pruning.AlphaBetaPruning(symbol);
     return player;
 
 
@@ -117,7 +119,7 @@ def get_player_b(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = QuiescentSearch(symbol);
+    player = quiescent_search.QuiescentSearch(symbol);
     return player;
 
 
@@ -127,7 +129,7 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = tTableMinimaxComputerPlayer(symbol, 10, utt=True, uh=False);
+    player = t_table_player.tTableMinimaxComputerPlayer(symbol, 10, utt=True, uh=False);
     return player;
 
 def get_player_d(symbol):
@@ -136,20 +138,20 @@ def get_player_d(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    pass;
+    return lookup_table.lookup_table(symbol)
 
 def get_combined_player(symbol):
     """
     :returns: the best combination of the minimax enhancements that your team can create
     """
-    pass
+    return combinedAgent.CombinedAgent(symbol)
 
 def main():
     #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
     print("")
     #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
     #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
-    compare_players(get_default_player("O"), get_player_b("X"), board_size=8)
+    compare_players(get_player_b("O"), get_combined_player("X"), board_size=8)
     print()
 
 if __name__ == "__main__":
