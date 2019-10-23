@@ -148,6 +148,7 @@ def main():
     #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
     #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
     compare_players(get_default_player("O"), get_player_c("X"), board_size=8)
+    #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
     print()
 
 if __name__ == "__main__":
