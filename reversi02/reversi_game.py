@@ -3,7 +3,7 @@
 import copy
 from datetime import datetime
 from reversi02.reversi_board import ReversiBoard
-from player2 import all_players, alpha_beta_pruning, combinedAgent, lookup_table, orion_player, quiescent_search, t_table_player;
+from player2 import all_players, alpha_beta_pruning, combinedAgent, lookup_table, orion_player, quiescent_search, transposition_table;
 '''
 from reversi02.desmondl_players import HumanPlayer, RandomComputerPlayer, GreedComputerPlayer,  dMiniMaxComputerPlayer
 from reversi02.cobi_players import HumanPlayer, RandomComputerPlayer, GreedyComputerPlayer, cMinimaxPlayer
@@ -75,7 +75,7 @@ def print_scores(score_map):
     print()
 
 
-def compare_players(player1, player2, board_size=8, board_filename=None, tests=10):
+def compare_players(player1, player2, board_size=8, board_filename=None, tests=4):
     game_count_map = {"X": 0, "O": 0, "TIE": 0}
     time_elapsed_map = {"X": 0, "O": 0}
     for i in range(1, tests + 1):
@@ -129,7 +129,7 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    player = t_table_player.tTableMinimaxComputerPlayer(symbol, 10, utt=True, uh=False);
+    player = transposition_table.TranspositionTable(symbol, 3, True, True);
     return player;
 
 def get_player_d(symbol):
@@ -152,6 +152,7 @@ def main():
     print("")
     #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
     #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
+<<<<<<< Updated upstream
 #<<<<<<< HEAD
     compare_players(get_player_d("O"), get_default_player("X"), board_size=8)
     #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
@@ -159,6 +160,9 @@ def main():
 
 #=======
     #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
+=======
+    compare_players(get_default_player("O"), get_combined_player("X"), board_size=8)
+>>>>>>> Stashed changes
     #get_combined_player("X")
 #>>>>>>> 6d53e1892bc879ac316892f81ab96593c3e0c241
 if __name__ == "__main__":

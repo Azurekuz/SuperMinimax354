@@ -20,7 +20,7 @@ class TranspositionTable:
         self.root = Node(None, board, None, self.movesTaken*2)
         rootID = getID(board._board, self.root.max)
         if self.useTTable and rootID in self.tTable and self.tTable[rootID][1] >= self.evalDepth + self.root.depth:
-            self.root.eval = self.tTable[rootHash]
+            self.root.eval = self.tTable[rootID]
         self.thingsToEval.append(self.root)     #initialize needed Variables for the search
         evalLen = 1     #Keep track of the number of items in thingsToEval
 
@@ -99,6 +99,7 @@ class TranspositionTable:
             self.permutateBoardState(node, depth, score)
 
     def permutateBoardState(self, node, depth, score):
+        #print("PERMUTATING...")
         depthScore = self.evalDepth - depth + node.depth
         workingID = getID(node.board._board, node.max)
         #print(workingID)
