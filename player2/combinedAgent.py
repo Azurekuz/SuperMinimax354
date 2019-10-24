@@ -4,14 +4,17 @@ from player2 import orion_player, lookup_table, alpha_beta_pruning, quiescent_se
 class CombinedAgent(orion_player.oMinimaxComputerPlayer):
     def __init__(self, symbol):
         super().__init__(symbol, 3, True)
-        self.ab_prune = alpha_beta_pruning.AlphaBetaPruning(symbol, False)
-        self.lookup_table = lookup_table.lookup_table(symbol, False)
-        self.quiet_search = quiescent_search.QuiescentSearch(symbol, False)
+        self.ab_prune = alpha_beta_pruning.AlphaBetaPruning(symbol, True)
+        self.lookup_table = lookup_table.lookup_table(symbol, True)
+        self.quiet_search = quiescent_search.QuiescentSearch(symbol, True)
         #self.t_table = t_table_player.tTableMinimaxComputerPlayer(symbol, 3, True, True)
         self.t_table = transposition_table.TranspositionTable(symbol, 3, True, True)
         self.originalBoard = None
 
     def get_move(self, board):
+        size = board.get_size()
+        if(self.lookup_table.use_lookup_table and self.t_table.useTTable and self.t_table.movesTaken >= (0.75*(size * size))):
+            self.lookup_table.use_lookup_table = False
         self.originalBoard = board
         currentDepth = 0
         if self.t_table.useTTable:

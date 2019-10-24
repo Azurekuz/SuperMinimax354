@@ -82,9 +82,9 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=4
         if i % 1 == 0:
             print(i, "games finished")
         if (i % 2 == 0):
-            game = ReversiGame(player1, player2, show_status=False, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player1, player2, show_status=True, board_size=board_size, board_filename=board_filename)
         else:
-            game = ReversiGame(player2, player1, show_status=False, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player2, player1, show_status=True, board_size=board_size, board_filename=board_filename)
         winner = game.calc_winner()
         game_count_map[winner] += 1
         for symbol in game.get_decision_times():
@@ -150,20 +150,9 @@ def get_combined_player(symbol):
 def main():
     #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
     print("")
-    #compare_players(get_player_b("O"), get_player_d("X"), board_size=8)
-    #compare_players(get_player_b("O"), get_player_c("X"), board_size=8)
-<<<<<<< Updated upstream
-#<<<<<<< HEAD
-    compare_players(get_player_d("O"), get_default_player("X"), board_size=8)
+    #quiescent_search.QuiescentSearch("O", True)
+    compare_players(get_combined_player("X"), orion_player.HumanPlayer("O"), board_size=8)
     #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
     #print()
-
-#=======
-    #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
-=======
-    compare_players(get_default_player("O"), get_combined_player("X"), board_size=8)
->>>>>>> Stashed changes
-    #get_combined_player("X")
-#>>>>>>> 6d53e1892bc879ac316892f81ab96593c3e0c241
 if __name__ == "__main__":
     main()
