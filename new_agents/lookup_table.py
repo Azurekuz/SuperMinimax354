@@ -28,10 +28,17 @@ class LookupTable(MinimaxComputerPlayer):
             self.root.eval = -110
             self.thingsToSearch.put(self.root)
         else:                                       #Otherwise find out which move the opponents took and make that the root
+            foundMove = False
             for c in self.root.children:
                 if c.board._board == board._board:
                     self.root = c
+                    foundMove = True
                     break
+                if not foundMove:
+                    print("Generate new Root")
+                    self.root = Node(None, board, None)
+                    self.root.eval = -110
+                    self.thingsToSearch.put(self.root)
         self.tileCount = tileCount
         self.root.parent = None                     #Cut off root from all the other nodes checked so the old root can be deleted
 
@@ -44,7 +51,6 @@ class LookupTable(MinimaxComputerPlayer):
                     move = self.root.moveToBestChoice  # If we've calculated to the end of all possible branches, return the best choice
                 else:
                     move = (-1, -1)
-                self.root = self.root.bestChoice
                 return move
 
             workingNode = self.thingsToSearch.get()
