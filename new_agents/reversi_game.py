@@ -2,8 +2,8 @@
 
 import copy
 from datetime import datetime
-from reversi_board import ReversiBoard
-from all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player;
+from new_agents.reversi_board import ReversiBoard
+from new_agents.all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player;
 
 class ReversiGame:
 
@@ -72,9 +72,9 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=4
         if i % 1 == 0:
             print(i, "games finished")
         if (i % 2 == 0):
-            game = ReversiGame(player1, player2, show_status=True, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player1, player2, show_status=False, board_size=board_size, board_filename=board_filename)
         else:
-            game = ReversiGame(player2, player1, show_status=True, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player2, player1, show_status=False, board_size=board_size, board_filename=board_filename)
         winner = game.calc_winner()
         game_count_map[winner] += 1
         for symbol in game.get_decision_times():
