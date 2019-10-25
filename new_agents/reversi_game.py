@@ -2,8 +2,8 @@
 
 import copy
 from datetime import datetime
-from core.reversi_board import ReversiBoard
-from new_agents.all_players import get_default_player, get_old_player;
+from reversi_board import ReversiBoard
+from all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player;
 
 class ReversiGame:
 
@@ -86,7 +86,7 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=4
     print(time_elapsed_map)
 
 def main():
-    compare_players(get_default_player("O"), get_old_player("X"), board_size=8)
+    compare_players(get_player_a("O"), get_combined_player("X"), board_size=8)
 
 if __name__ == "__main__":
     main()

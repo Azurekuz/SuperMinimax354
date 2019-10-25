@@ -1,8 +1,8 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
 import copy
-from new_agents.reversi_board import ReversiBoard
+from reversi_board import ReversiBoard, _getNewBoard
 
-class tTableMinimaxComputerPlayer:
+class TranspositionTable:
 
     def __init__(self, symbol, depth, utt=False, uh=False):
         self.symbol = symbol
@@ -18,8 +18,9 @@ class tTableMinimaxComputerPlayer:
     def get_move(self, board):
         currentDepth = 0
         self.root = Node(None, board, None, self.movesTaken*2)
-        if self.useTTable and board in self.tTable and self.tTable[board][1] >= self.evalDepth + self.root.depth:
-            self.root.eval = self.tTable[board]
+        rootID = getID(board._board, self.root.max)
+        if self.useTTable and rootID in self.tTable and self.tTable[rootID][1] >= self.evalDepth + self.root.depth:
+            self.root.eval = self.tTable[rootID]
         self.thingsToEval.append(self.root)     #initialize needed Variables for the search
         evalLen = 1     #Keep track of the number of items in thingsToEval
 
@@ -39,7 +40,7 @@ class tTableMinimaxComputerPlayer:
                 workingNode.max = not workingNode.max
             evalLen = len(self.thingsToEval)
 
-        #print("Optimal move's heuristic is: " + str(self.root.eval))
+        print("Optimal move's heuristic is: " + str(self.root.eval))
         self.movesTaken += 1
 
         for c in self.root.children:
@@ -64,12 +65,14 @@ class tTableMinimaxComputerPlayer:
             opponentSymbol = workingNode.board.get_opponent_symbol(self.symbol)
             newBoard.make_move(opponentSymbol, move)
 
-        if self.useTTable and newBoard in self.tTable and self.tTable[newBoard][1] >= self.evalDepth - depth + workingNode.depth:
+        boardID = getID(newBoard._board, workingNode.max)
+
+        if self.useTTable and boardID in self.tTable and self.tTable[boardID][1] >= self.evalDepth - depth + workingNode.depth:
             newNode = Node(workingNode, newBoard, move, self.movesTaken*2 + depth)
-            newNode.eval = self.tTable[newBoard][0]
+            newNode.eval = self.tTable[boardID][0]
             workingNode.children.append(newNode)
         else:
-            self.thingsToEval.append(Node(workingNode, newBoard, move, self.movesTaken*2 + depth))
+            self.thingsToEval.append(Node(workingNode, newBoard, move, workingNode.depth + 1))
             workingNode.children.append(self.thingsToEval[len(self.thingsToEval)-1])
 
     def getValidMoves(self, workingNode):
@@ -96,31 +99,40 @@ class tTableMinimaxComputerPlayer:
             self.permutateBoardState(node, depth, score)
 
     def permutateBoardState(self, node, depth, score):
+        #print("PERMUTATING...")
         depthScore = self.evalDepth - depth + node.depth
-        workingBoard = node.board
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
-        workingBoard = node.board.flip_vertical()
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
-        workingBoard = node.board.flip_horizontal()
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
-        workingBoard = node.board.flip_diagonal_tr_bl()
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
-        workingBoard = node.board.flip_diagonal_tl_br()
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
-        workingBoard = node.board.rotate_clockwise()
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
-        workingBoard = node.board.rotate_counterclockwise()
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
-        workingBoard = node.board.rotate_around()
-        if workingBoard not in self.tTable or self.tTable[workingBoard][1] < depthScore:
-            self.tTable[workingBoard] = (score, depthScore)
+        workingID = getID(node.board._board, node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
+        workingID = getID(flip_vertical(node.board), node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
+        workingID = getID(flip_horizontal(node.board), node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
+        workingID = getID(flip_diagonal_tl_br(node.board), node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
+        workingID = getID(flip_diagonal_tr_bl(node.board), node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
+        workingID = getID(rotate_clockwise(node.board), node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
+        workingID = getID(rotate_counterclockwise(node.board), node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
+        workingID = getID(rotate_around(node.board), node.max)
+        #print(workingID)
+        if workingID not in self.tTable or self.tTable[workingID][1] < depthScore:
+            self.tTable[workingID] = (score, depthScore + 1)
 
     def max(self, children):
         max = -110
@@ -159,3 +171,69 @@ class Node:
         self.board = board
         self.move = move
         self.depth = depth
+
+def flip_horizontal(b):
+    board = b._board
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][j] = board[i][j]
+    return newBoard
+
+def flip_vertical(b):
+    board = b._board
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[i][size - 1 - j] = board[i][j]
+    return newBoard
+
+def flip_diagonal_tr_bl(b):
+    board = b._board
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[i][j] = board[j][i]
+    return newBoard
+
+def flip_diagonal_tl_br(b):
+    board = b._board
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][size - 1 - j] = board[j][i]
+    return newBoard
+
+def rotate_clockwise(b):
+    board = b._board
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][j] = board[j][i]
+    return newBoard
+
+def rotate_counterclockwise(b):
+    board = b._board
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[i][size - 1 - j] = board[j][i]
+    return newBoard
+
+def rotate_around(b):
+    board = b._board
+    size = len(board)
+    newBoard = _getNewBoard(size)
+    for i in range(0, size):
+        for j in range(0, size):
+            newBoard[size - 1 - i][size - 1 - j] = board[i][j]
+    return newBoard
+
+def getID(board, max):
+    return str(board) + str(max)

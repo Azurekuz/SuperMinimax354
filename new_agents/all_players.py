@@ -1,8 +1,4 @@
-from new_agents import base_player
-from old_agents.player2 import orion_player
-
-def get_old_player(symbol):
-    return orion_player.oMinimaxComputerPlayer(symbol, 3)
+import base_player, alpha_beta_pruning, quiescent_search, lookup_table, transposition_table
 
 def get_default_player(symbol):
     """
@@ -16,8 +12,7 @@ def get_player_a(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    #return alpha_beta_pruning.AlphaBetaPruning(symbol, True)
-    pass
+    return alpha_beta_pruning.AlphaBetaPruning(symbol, True)
 
 
 def get_player_b(symbol):
@@ -26,8 +21,7 @@ def get_player_b(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    #return quiescent_search.QuiescentSearch(symbol, True)
-    pass
+    return quiescent_search.QuiescentSearch(symbol, 3, True)
 
 
 def get_player_c(symbol):
@@ -36,8 +30,7 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    #return lookup_table.lookup_table(symbol, True)
-    pass
+    return lookup_table.LookupTable(symbol, 2.5, ult=True)
 
 
 def get_player_d(symbol):
@@ -46,13 +39,11 @@ def get_player_d(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    #return transposition_table.TranspositionTable(symbol, 3, True, True)
-    pass
+    return transposition_table.TranspositionTable(symbol, 3, utt=True)
 
 
 def get_combined_player(symbol):
     """
     :returns: the best combination of the minimax enhancements that your team can create
     """
-    #return combinedAgent(symbol)
-    pass
+    return lookup_table.LookupTable(symbol, 2.5, ult=True)

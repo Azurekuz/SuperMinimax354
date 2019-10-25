@@ -2,8 +2,8 @@
 
 import random
 import copy
-from core.reversi_board import ReversiBoard
-from player2.orion_player import oMinimaxComputerPlayer;
+from reversi_board import ReversiBoard
+from orion_player import oMinimaxComputerPlayer;
 
 class AlphaBetaPruning(oMinimaxComputerPlayer):
 

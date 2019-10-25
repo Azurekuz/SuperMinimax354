@@ -1,18 +1,23 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
 import copy
 from reversi_board import ReversiBoard
+from base_player import MinimaxComputerPlayer
 from datetime import datetime, timedelta
 from queue import Queue
 
-class MinimaxComputerPlayer:
+class LookupTable(MinimaxComputerPlayer):
 
-    def __init__(self, symbol, timeLimit, uh=False):
-        self.symbol = symbol
-        self.root = None
-        self.timeLimit = timedelta(seconds=(timeLimit-.01))
-        self.tileCount = 0
-        self.thingsToSearch =  Queue()
-        self.useHeuristic = uh
+    def __init__(self, symbol, timeLimit, uh=False, ult=False):
+        super().__init__(symbol, timeLimit, uh)
+        self.useLookupTable = ult
+        self.valueBoardEight = [[32, 8, 8, 8, 8, 8, 8, 32],
+                                [8, 16, 4, 4, 4, 4, 16, 8],
+                                [8, 4, 8, 2, 2, 8, 4, 8],
+                                [8, 4, 2, 0, 0, 2, 4, 8],
+                                [8, 4, 2, 0, 0, 2, 4, 8],
+                                [8, 4, 8, 2, 2, 8, 4, 8],
+                                [8, 16, 4, 4, 4, 4, 16, 8],
+                                [32, 8, 8, 8, 8, 8, 8, 32]]
 
     def get_move(self, board):
         startTime = datetime.now()                  #Get the time the function started at
@@ -36,7 +41,7 @@ class MinimaxComputerPlayer:
         while not self.thingsToSearch.empty():               #Start main search loop
             if datetime.now() - startTime > self.timeLimit:     #If almost out of time, stop searching and return current best
                 if self.root is not None and self.root.moveToBestChoice is not None:
-                    move = self.root.moveToBestChoice
+                    move = self.root.moveToBestChoice  # If we've calculated to the end of all possible branches, return the best choice
                 else:
                     move = (-1, -1)
                 self.root = self.root.bestChoice
@@ -95,6 +100,8 @@ class MinimaxComputerPlayer:
             score = node.board.calc_heuristic()[self.symbol]    #If using heuristic, calc based on that
         else:
             score = node.board.calc_scores()[self.symbol]       #Otherwise just use the score the board gives
+        if self.useLookupTable and len(node.board._board) == 8:
+            score += self.valueBoardEight[node.move[0]][node.move[1]]
         node.eval = score
 
     def evalUp(self, node):                                     #The function to trickle the score upwards when we change it
