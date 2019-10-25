@@ -26,8 +26,11 @@ class QuiescentSearch(oMinimaxComputerPlayer):
                 self.thingsToEval.remove(workingNode)
                 self.evalNode(workingNode)
                 if (currentDepth >= self.evalDepth and self.check_quiet_iterative(workingNode)):
+                    print("OLD: " + str(workingNode.eval))
                     #print("Node not quiet")
                     workingNode.eval = self.quiet_search(workingNode.board, 3, workingNode.board.get_opponent_symbol(self.derive_symbol(workingNode.max, workingNode.board)));
+                    print("NEW: " + str(workingNode.eval))
+                    print()
                 #print("Node evaluated @ depth " + str(currentDepth) + ": " + str(workingNode.eval))
                 currentDepth -= 1
             else:

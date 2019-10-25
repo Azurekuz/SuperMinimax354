@@ -1,17 +1,24 @@
+<<<<<<< HEAD
 from old_agents.player2 import orion_player, lookup_table, alpha_beta_pruning, quiescent_search, transposition_table
 
+=======
+from player2 import orion_player, lookup_table, alpha_beta_pruning, quiescent_search, transposition_table
+from datetime import datetime
+>>>>>>> Core-Algorithm-Revamp
 
 class CombinedAgent(orion_player.oMinimaxComputerPlayer):
     def __init__(self, symbol):
         super().__init__(symbol, 3, True)
-        self.ab_prune = alpha_beta_pruning.AlphaBetaPruning(symbol, False)
-        self.lookup_table = lookup_table.lookup_table(symbol, False)
-        self.quiet_search = quiescent_search.QuiescentSearch(symbol, False)
+        self.ab_prune = alpha_beta_pruning.AlphaBetaPruning(symbol, True)
+        self.lookup_table = lookup_table.lookup_table(symbol, True)
+        self.quiet_search = quiescent_search.QuiescentSearch(symbol, True)
         #self.t_table = t_table_player.tTableMinimaxComputerPlayer(symbol, 3, True, True)
         self.t_table = transposition_table.TranspositionTable(symbol, 3, True, True)
         self.originalBoard = None
 
     def get_move(self, board):
+        start = datetime.now()
+        size = board.get_size()
         self.originalBoard = board
         currentDepth = 0
         if self.t_table.useTTable:
@@ -57,6 +64,10 @@ class CombinedAgent(orion_player.oMinimaxComputerPlayer):
 
         for c in self.root.children:
             if (c.eval == self.root.eval):
+                start = (datetime.now() - start).total_seconds()
+                if(start > 2.5):
+                    print("MOVE " + str(self.t_table.movesTaken) + ": " + str(start))
+
                 return c.move
         return -1, -1
 
