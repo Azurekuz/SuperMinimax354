@@ -151,7 +151,7 @@ def main():
     #ReversiGame(MinimaxComputerPlayer("O", 4, True), HumanPlayer("X")) #board_filename="board4by4nearEnd.json"
     print("")
     #quiescent_search.QuiescentSearch("O", True)
-    compare_players(get_combined_player("X"), get_player_d("O"), board_size=8)
+    compare_players(get_combined_player("X"), get_default_player("O"), board_size=8)
     #compare_players(get_default_player("O"), get_default_player("X"), board_size=8)
     #print()
 if __name__ == "__main__":
