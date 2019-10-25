@@ -1,4 +1,4 @@
-from player2 import orion_player, lookup_table, alpha_beta_pruning, quiescent_search, transposition_table
+from old_agents.player2 import orion_player, lookup_table, alpha_beta_pruning, quiescent_search, transposition_table
 
 
 class CombinedAgent(orion_player.oMinimaxComputerPlayer):
@@ -89,7 +89,7 @@ class CombinedAgent(orion_player.oMinimaxComputerPlayer):
                 else:
                     node.eval = self.min(node.children)
                 if (self.lookup_table.use_lookup_table and node.parent is not None):
-                    node.eval -= self.lookup_table.valueBoardEight[node.move[0]][node.move[1]]
+                    node.eval += self.lookup_table.valueBoardEight[node.move[0]][node.move[1]]
         if self.t_table.useTTable:
             self.t_table.permutateBoardState(node, depth, node.eval)
         return [alpha, beta]

@@ -1,4 +1,4 @@
-from player2 import orion_player, quiescent_search, lookup_table, alpha_beta_pruning, t_table_player, combinedAgent, transposition_table
+from old_agents.player2 import orion_player, quiescent_search, lookup_table, alpha_beta_pruning, t_table_player, combinedAgent, transposition_table
 def get_default_player(symbol):
     """
     :returns: a default minimax player that can operate successfully on a given 8x8 board

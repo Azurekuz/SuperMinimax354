@@ -1,6 +1,5 @@
 from old_agents.player2.orion_player import oMinimaxComputerPlayer
 
-
 class lookup_table(oMinimaxComputerPlayer):
     def __init__(self, symbol, ult=False):
         super().__init__(symbol, 3)
