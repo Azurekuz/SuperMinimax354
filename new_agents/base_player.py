@@ -15,25 +15,21 @@ class MinimaxComputerPlayer:
         self.useHeuristic = uh
 
     def get_move(self, board):
-        startTime = datetime.now()                  #Get the time the function started at
+        startTime = datetime.now()                  #Get the time the function started at for timing
         tileCount = self.countPieces(board._board)
-        if self.root is None or tileCount < self.tileCount:                       #If we're just starting the game and have no root, set a null root
-            print("Generate new Root")
-            self.root = Node(None, board, None)
-            self.root.eval = -110
-            self.thingsToSearch.put(self.root)
-        else:                                       #Otherwise find out which move the opponents took and make that the root
+
+        if self.root is not None and tileCount > self.tileCount:                                       #Find out which move the opponents took and make that the root
             foundMove = False
             for c in self.root.children:
                 if c.board._board == board._board:
                     self.root = c
                     foundMove = True
                     break
-            if not foundMove:
-                print("Generate new Root")
-                self.root = Node(None, board, None)
-                self.root.eval = -110
-                self.thingsToSearch.put(self.root)
+        if self.root is None or tileCount < self.tileCount or not foundMove:                       #If we can't for some reason make a new root
+            self.root = Node(None, board, None)
+            self.root.eval = -110
+            self.thingsToSearch.put(self.root)
+
         self.tileCount = tileCount
         self.root.parent = None                     #Cut off root from all the other nodes checked so the old root can be deleted
 

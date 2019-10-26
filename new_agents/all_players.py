@@ -1,4 +1,4 @@
-import base_player, alpha_beta_pruning, quiescent_search, lookup_table, transposition_table
+import base_player, alpha_beta_pruning, quiescent_search, lookup_table, transposition_table, mini_mega
 
 def get_default_player(symbol):
     """
@@ -46,4 +46,4 @@ def get_combined_player(symbol):
     """
     :returns: the best combination of the minimax enhancements that your team can create
     """
-    return lookup_table.LookupTable(symbol, 2.5, ult=True)
+    return mini_mega.MiniMega(symbol, 2.5)
