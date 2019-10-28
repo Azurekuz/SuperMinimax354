@@ -1,15 +1,12 @@
 # Written by Toby Dragon
 
 import copy
+import random
 from datetime import datetime
-<<<<<<< HEAD
-from reversi_board import ReversiBoard
+from reversi_board import ReversiBoard, _drawBoard
 from all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player;
-from orion_player import HumanPlayer
-=======
-from new_agents.reversi_board import ReversiBoard
-from new_agents.all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player;
->>>>>>> origin/master
+
+from mini_mega import Node
 
 class ReversiGame:
 
@@ -78,9 +75,9 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=4
         if i % 1 == 0:
             print(i, "games finished")
         if (i % 2 == 0):
-            game = ReversiGame(player1, player2, show_status=False, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player1, player2, show_status=True, board_size=board_size, board_filename=board_filename)
         else:
-            game = ReversiGame(player2, player1, show_status=False, board_size=board_size, board_filename=board_filename)
+            game = ReversiGame(player2, player1, show_status=True, board_size=board_size, board_filename=board_filename)
         winner = game.calc_winner()
         game_count_map[winner] += 1
         for symbol in game.get_decision_times():
@@ -91,8 +88,32 @@ def compare_players(player1, player2, board_size=8, board_filename=None, tests=4
     print(game_count_map)
     print(time_elapsed_map)
 
+def testValidMoveAlgorithm():
+    board = genRandomBoard()
+    oldValidMoveAlgorithm = genRandomBoard().calc_valid_moves("X")
+    oldValidMoveAlgorithm.sort()
+    player = get_combined_player("X")
+    node = Node(None, board, None)
+    player.evalAndGetMoves(node)
+    newValidMoveAlgorithm = node.validMoves
+    newValidMoveAlgorithm.sort()
+    _drawBoard(board._board)
+    print("Old: " + str(oldValidMoveAlgorithm))
+    print("New: " + str(newValidMoveAlgorithm))
+
+def genRandomBoard():
+    board = ReversiBoard(8)
+    physicalBoard = board._board
+    tileChoices = ['X', 'O', ' ']
+    for i in range(len(physicalBoard)):
+        for j in range(len(physicalBoard)):
+            physicalBoard[i][j] = random.choice(tileChoices)
+    return board
+
 def main():
-    compare_players(HumanPlayer("O"), get_combined_player("X"), board_size=8, tests=1)
+    #compare_players(get_default_player("O"), get_combined_player("X"), board_size=8, tests= 1)
+    for i in range(10):
+        testValidMoveAlgorithm()
 
 if __name__ == "__main__":
     main()

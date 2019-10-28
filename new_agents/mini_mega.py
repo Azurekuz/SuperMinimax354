@@ -43,6 +43,7 @@ class MiniMega:
                     move = self.root.moveToBestChoice  # If we've run out of time, return the best choice we found
                     self.root = self.root.bestChoice
                     print(self.root.validMoves)
+                    print(move)
                     print(self.root.eval)
                     print(self.root.heuristicDepth - self.root.depth)
                     print(datetime.now() - startTime)
@@ -77,7 +78,7 @@ class MiniMega:
         size = len(board)
         diagSize = size * 2 - 5
         maxFlips = 0
-        depthScaling = 2 * node.depth / 64
+        depthScaling = ((64 - node.depth)/64) + 1
         score = 0
         if node.max:
             mySymbol = self.symbol
@@ -102,8 +103,8 @@ class MiniMega:
         diagTLPrevious = [None] * diagSize
         diagTRPrevious = [None] * diagSize
 
-        for i in range(0, size):
-            for j in range(0, size):                                #Iterate through the entire board
+        for j in range(0, size):
+            for i in range(0, size):                                #Iterate through the entire board
                 workingVal = board[i][j]
 
                 ######################################################################Start eval section
@@ -124,13 +125,15 @@ class MiniMega:
                 if workingVal != vertCurrent[i]:                    #If the value on this tile is different from what we've been getting...
                     if (vertPrevious[i] == mySymbol and workingVal == ' ') or (vertPrevious[i] == ' ' and workingVal == mySymbol):  #And only one value on either end is a ''
                         if vertPrevious[i] == ' ':                      #If the tile on the previous end is the open space
-                            validMoves.append(vertPreviousLoc[i])   #Append the coords of that space to the list of valid moves
-                            if vertPreviousLoc[i][1] - j - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
-                                maxFlips = j - vertPreviousLoc[i][1] - 1
+                            if vertPreviousLoc[i] not in validMoves:
+                                validMoves.append(vertPreviousLoc[i])   #Append the coords of that space to the list of valid moves
+                                if vertPreviousLoc[i][1] - j - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
+                                    maxFlips = j - vertPreviousLoc[i][1] - 1
                         else:                                       #If it's not the tile on the previous end it must be the one here
-                            validMoves.append((i,j))                #Therefore append those coords instead
-                            if vertPreviousLoc[i][1] - j - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
-                                maxFlips = j - vertPreviousLoc[i][1] - 1
+                            if (i,j) not in validMoves:
+                                validMoves.append((i,j))                #Therefore append those coords instead
+                                if vertPreviousLoc[i][1] - j - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
+                                    maxFlips = j - vertPreviousLoc[i][1] - 1
                     vertPrevious[i] = vertCurrent[i]                #Either way make sure we update the recorded tile to the currently seen ones
                     vertCurrent[i] = workingVal                     #And update the currently seen one to the one we just saw
                     vertPreviousLoc[i] = (i,j - 1)                  #Also make sure to update the location of the new end tile to be the location of the currently seen tile, AKA one space behind us
@@ -140,13 +143,15 @@ class MiniMega:
                 if workingVal != horCurrent[j]:                     #If the value on this tile is different from what we've been getting...
                     if (horPrevious[j] == mySymbol and workingVal == ' ') or (horPrevious[j] == ' ' and workingVal == mySymbol):   #And only one value on either end is a ''
                         if horPrevious[j] == ' ':                       #If the tile on the previous end is the open space
-                            validMoves.append(horPreviousLoc[j])    #Append the coords of that space to the list of valid moves
-                            if horPreviousLoc[j][1] - i - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
-                                maxFlips = i - horPreviousLoc[j][1] - 1
+                            if horPreviousLoc[i] not in validMoves:
+                                validMoves.append(horPreviousLoc[j])    #Append the coords of that space to the list of valid moves
+                                if horPreviousLoc[j][1] - i - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
+                                    maxFlips = i - horPreviousLoc[j][1] - 1
                         else:                                       #If it's not the tile on the previous end it must be the one here
-                            validMoves.append((i,j))                #Therefore append those coords instead
-                            if i - horPreviousLoc[j][1] - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
-                                maxFlips = horPreviousLoc[j][1] - i - 1
+                            if (i,j) not in validMoves:
+                                validMoves.append((i,j))                #Therefore append those coords instead
+                                if i - horPreviousLoc[j][1] - 1 > maxFlips:    #Check if this is the highest number of flips, if so update it
+                                    maxFlips = horPreviousLoc[j][1] - i - 1
                     horPrevious[j] = horCurrent[j]                  #Either way make sure we update the recorded tile to the currently seen ones
                     horCurrent[j] = workingVal                      #And update the currently seen one to the one we just saw
                     horPreviousLoc[j] = (i - 1,j)                   #Also make sure to update the location of the new end tile to be the location of the currently seen tile, AKA one space behind us
@@ -158,13 +163,15 @@ class MiniMega:
                     if workingVal != diagTLCurrent[tlDiagIndex]:                            #If the value on this tile is different from what we've been getting...
                         if (diagTLPrevious[tlDiagIndex] == mySymbol and workingVal == ' ') or (diagTLPrevious[tlDiagIndex] == ' ' and workingVal == mySymbol):                    #And only one value on either end is a ''
                             if diagTLPrevious[tlDiagIndex] == ' ':                                        #If the tile on the previous end is the open space
-                                validMoves.append(diagTLPreviousLoc[tlDiagIndex])           #Append the coords of that space to the list of valid moves
-                                if (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2 > maxFlips: #Check if this is the highest number of flips, if so update it
-                                    maxFlips = (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2
+                                if diagTLPreviousLoc[tlDiagIndex] not in validMoves:
+                                    validMoves.append(diagTLPreviousLoc[tlDiagIndex])           #Append the coords of that space to the list of valid moves
+                                    if (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2 > maxFlips: #Check if this is the highest number of flips, if so update it
+                                        maxFlips = (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2
                             else:                                                           #If it's not the tile on the previous end it must be the one here
-                                validMoves.append((i,j))                                    #Therefore append those coords instead
-                                if (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2 > maxFlips: #Check if this is the highest number of flips, if so update it
-                                    maxFlips = (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2
+                                if (i, j) not in validMoves:
+                                    validMoves.append((i,j))                                    #Therefore append those coords instead
+                                    if (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2 > maxFlips: #Check if this is the highest number of flips, if so update it
+                                        maxFlips = (i + j - diagTLPreviousLoc[tlDiagIndex][0] - diagTLPreviousLoc[tlDiagIndex][0]) // 2
                         diagTLPrevious[tlDiagIndex] = diagTLCurrent[tlDiagIndex]            #Either way make sure we update the recorded tile to the currently seen ones
                         diagTLCurrent[tlDiagIndex] = workingVal                             #And update the currently seen one to the one we just saw
                         diagTLPreviousLoc[tlDiagIndex] = (i - 1,j - 1)                                #Also make sure to update the location of the new end tile to be the location of the currently seen tile, AKA one space behind us
@@ -176,16 +183,18 @@ class MiniMega:
                     if workingVal != diagTRCurrent[trDiagIndex]:  # If the value on this tile is different from what we've been getting...
                         if (diagTRPrevious[trDiagIndex] == mySymbol and workingVal == ' ') or (diagTRPrevious[trDiagIndex] == ' ' and workingVal == mySymbol):  # And only one value on either end is a ''
                             if diagTRPrevious[trDiagIndex] == ' ':  # If the tile on the previous end is the open space
-                                validMoves.append(diagTRPreviousLoc[trDiagIndex])  # Append the coords of that space to the list of valid moves
-                                if (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2 > maxFlips:  # Check if this is the highest number of flips, if so update it
-                                    maxFlips = (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2
+                                if diagTRPreviousLoc[trDiagIndex] not in validMoves:
+                                    validMoves.append(diagTRPreviousLoc[trDiagIndex])  # Append the coords of that space to the list of valid moves
+                                    if (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2 > maxFlips:  # Check if this is the highest number of flips, if so update it
+                                        maxFlips = (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2
                             else:  # If it's not the tile on the previous end it must be the one here
-                                validMoves.append((i, j))  # Therefore append those coords instead
-                                if (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2 > maxFlips:  # Check if this is the highest number of flips, if so update it
-                                    maxFlips = (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2
+                                if (i, j) not in validMoves:
+                                    validMoves.append((i, j))  # Therefore append those coords instead
+                                    if (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2 > maxFlips:  # Check if this is the highest number of flips, if so update it
+                                        maxFlips = (j + diagTRPreviousLoc[trDiagIndex][0] - i - diagTRPreviousLoc[trDiagIndex][0]) // 2
                         diagTRPrevious[trDiagIndex] = diagTRCurrent[trDiagIndex]  # Either way make sure we update the recorded tile to the currently seen ones
                         diagTRCurrent[trDiagIndex] = workingVal  # And update the currently seen one to the one we just saw
-                        diagTRPreviousLoc[trDiagIndex] = (i - 1,j + 1)  # Also make sure to update the location of the new end tile to be the location of the currently seen tile, AKA one space behind us
+                        diagTRPreviousLoc[trDiagIndex] = (i + 1,j - 1)  # Also make sure to update the location of the new end tile to be the location of the currently seen tile, AKA one space behind us
 
         node.stability = (4 - maxFlips) / 5 + 1
         node.eval = score * node.stability

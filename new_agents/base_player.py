@@ -18,25 +18,16 @@ class MinimaxComputerPlayer:
     def get_move(self, board):
         startTime = datetime.now()                  #Get the time the function started at for timing
         tileCount = self.countPieces(board._board)
-<<<<<<< HEAD
 
-        if self.root is not None and tileCount > self.tileCount:                                       #Find out which move the opponents took and make that the root
-=======
-        if self.root is None or tileCount < self.tileCount:                       #If we're just starting the game and have no root, set a null root
-            print("Generate new Root")
-            self.root = Node(None, board, None)
-            self.curBoardArrayMax = len(board._board) - 1
-            self.root.eval = -110
-            self.thingsToSearch.put(self.root)
-        else:                                       #Otherwise find out which move the opponents took and make that the root
->>>>>>> origin/master
+        if self.root is not None and tileCount > self.tileCount:  # Find out which move the opponents took and make that the root
             foundMove = False
             for c in self.root.children:
                 if c.board._board == board._board:
                     self.root = c
                     foundMove = True
                     break
-        if self.root is None or tileCount < self.tileCount or not foundMove:                       #If we can't for some reason make a new root
+        if self.root is None or tileCount < self.tileCount or not foundMove:  # If we can't for some reason make a new root
+            print("Generate new root")
             self.root = Node(None, board, None)
             self.root.eval = -110
             self.thingsToSearch.put(self.root)
@@ -100,11 +91,11 @@ class MinimaxComputerPlayer:
 
     def getValidMoves(self, node):                          #Infrastructure to call calc_valid_moves appropriately
         if (node.max):
-            #return node.board.calc_valid_moves(self.symbol)
-            return self.genValidMoves(self.symbol, node.board)
+            return node.board.calc_valid_moves(self.symbol)
+            #return self.genValidMoves(self.symbol, node.board)
         else:
-            #return node.board.calc_valid_moves(node.board.get_opponent_symbol(self.symbol))
-            return self.genValidMoves(node.board.get_opponent_symbol(self.symbol), node.board)
+            return node.board.calc_valid_moves(node.board.get_opponent_symbol(self.symbol))
+            #return self.genValidMoves(node.board.get_opponent_symbol(self.symbol), node.board)
 
 
     def evalBottom(self, node):                                 #Evalutate a node that just created and has no children
