@@ -111,9 +111,9 @@ def genRandomBoard():
     return board
 
 def main():
-    #compare_players(get_default_player("O"), get_combined_player("X"), board_size=8, tests= 1)
-    for i in range(10):
-        testValidMoveAlgorithm()
+    compare_players(get_combined_player("O"), get_combined_player("X"), board_size=8, tests= 1)
+    #for i in range(10):
+    #    testValidMoveAlgorithm()
 
 if __name__ == "__main__":
     main()

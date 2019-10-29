@@ -1,18 +1,17 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
-import copy
+import copy, heapq
 from reversi_board import ReversiBoard, _drawBoard
 from base_player import MinimaxComputerPlayer
 from datetime import datetime, timedelta
-from queue import Queue
 
 class MiniMega:
 
     def __init__(self, symbol, timeLimit):
         self.symbol = symbol
         self.root = None
-        self.timeLimit = timedelta(seconds=(timeLimit - .01))
+        self.timeLimit = timedelta(seconds=(timeLimit - .06))
         self.tileCount = 0
-        self.thingsToSearch = Queue()
+        self.thingsToSearch = []
 
     def get_move(self, board):
         startTime = datetime.now()                  #Get the time the function started at
@@ -29,7 +28,8 @@ class MiniMega:
             print("Generate new root")
             self.root = Node(None, board, None)
             self.root.eval = -110
-            self.thingsToSearch.put(self.root)
+            self.root.depth = self.countPieces(self.root.board._board)
+            heapq.heappush(self.thingsToSearch, [self.root.depth - self.root.stability / 2, self.root])
 
         self.tileCount = tileCount
         self.root.parent = None                     #Cut off root from all the other nodes checked so the old root can be deleted
@@ -37,7 +37,7 @@ class MiniMega:
         self.trimQueue()        #Trim the self.thingsToSearch queue down to only items that are still relevant
 
 
-        while not self.thingsToSearch.empty():               #Start main search loop
+        while self.thingsToSearch:               #Start main search loop
             if datetime.now() - startTime > self.timeLimit:     #If almost out of time, stop searching and return current best
                 if self.root is not None and self.root.moveToBestChoice is not None:
                     move = self.root.moveToBestChoice  # If we've run out of time, return the best choice we found
@@ -51,7 +51,7 @@ class MiniMega:
                     move = (-1, -1)
                 return move
 
-            workingNode = self.thingsToSearch.get()
+            workingNode = heapq.heappop(self.thingsToSearch)[1]
             self.evalAndGetMoves(workingNode)           #Get workingnode and calculate moves it could make, as well as evaluating it
 
             if len(workingNode.validMoves) > 0:             #If it has moves it could make, add them to the tree
@@ -196,8 +196,8 @@ class MiniMega:
                         diagTRCurrent[trDiagIndex] = workingVal  # And update the currently seen one to the one we just saw
                         diagTRPreviousLoc[trDiagIndex] = (i + 1,j - 1)  # Also make sure to update the location of the new end tile to be the location of the currently seen tile, AKA one space behind us
 
-        node.stability = (4 - maxFlips) / 5 + 1
-        node.eval = score * node.stability
+        node.stability = maxFlips
+        node.eval = score * ((4 - node.stability) / 5 + 1)
         #_drawBoard(node.board._board)
         #print(validMoves)
         node.validMoves = validMoves
@@ -217,14 +217,8 @@ class MiniMega:
             opponentSymbol = node.board.get_opponent_symbol(self.symbol)    #If not, opponent makes a move
             newBoard.make_move(opponentSymbol, move)
         newNode = Node(node, newBoard, move)
-        self.thingsToSearch.put(newNode)                #Add to list of things to eval
+        heapq.heappush(self.thingsToSearch, [newNode.depth - node.stability / 2, newNode])                #Add to list of things to eval
         node.children.append(newNode)
-
-    def getValidMoves(self, node):                          #Infrastructure to call calc_valid_moves appropriately
-        if (node.max):
-            return node.board.calc_valid_moves(self.symbol)
-        else:
-            return node.board.calc_valid_moves(node.board.get_opponent_symbol(self.symbol))
 
     def evalUp(self, node):                                     #The function to trickle the score upwards when we change it
         if(node.max):
@@ -251,14 +245,6 @@ class MiniMega:
                 node.bestChoice = c
                 node.moveToBestChoice = c.move
 
-
-    def trimQueue(self):
-        size = self.thingsToSearch.qsize()
-        for i in range(0, size):
-            node = self.thingsToSearch.get()
-            if self.isRelevant(node):
-                self.thingsToSearch.put(node)
-
     def isRelevant(self, node):
         if node == self.root:
             return True
@@ -267,6 +253,12 @@ class MiniMega:
         else:
             return self.isRelevant(node.parent)
 
+    def trimQueue(self):
+        newPQ = []
+        for i in self.thingsToSearch:
+            if self.isRelevant(i[1]):
+                heapq.heappush(newPQ, i)
+        self.thingsToSearch = newPQ
 
     def countPieces(self, board):
         count = 0
@@ -279,7 +271,7 @@ class MiniMega:
 
 
     def __name__ (self):
-        return "Revamped Minimax Player"
+        return "Minimega Player"
 
 
 class Node:
@@ -301,3 +293,28 @@ class Node:
         self.moveToBestChoice = None
         self.move = move
         self.heuristicDepth = self.depth
+
+    def __lt__(self, other):
+        if self.depth < other.depth:
+            return True
+        else:
+            return False
+
+    def __le__(self, other):
+        if self.depth <= other.depth:
+            return True
+        else:
+            return False
+
+    def __gt__(self, other):
+        if self.depth > other.depth:
+            return True
+        else:
+            return False
+
+    def __ge__(self, other):
+        if self.depth >= other.depth:
+            return True
+        else:
+            return False
+

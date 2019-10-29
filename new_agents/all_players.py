@@ -4,7 +4,7 @@ def get_default_player(symbol):
     """
     :returns: a default minimax player that can operate successfully on a given 8x8 board
     """
-    return base_player.MinimaxComputerPlayer(symbol, 2.5)
+    return base_player.MinimaxComputerPlayer(symbol, 2.7)
 
 def get_player_a(symbol):
     """
@@ -30,7 +30,7 @@ def get_player_c(symbol):
     :enchancement:
     :returns: an enhanced minimax player that can operate successfully on a given 8x8 board
     """
-    return lookup_table.LookupTable(symbol, 2.5, ult=True)
+    return lookup_table.LookupTable(symbol, 2.7, ult=True)
 
 
 def get_player_d(symbol):
@@ -46,4 +46,4 @@ def get_combined_player(symbol):
     """
     :returns: the best combination of the minimax enhancements that your team can create
     """
-    return mini_mega.MiniMega(symbol, 2.5)
+    return mini_mega.MiniMega(symbol, 2.7)
