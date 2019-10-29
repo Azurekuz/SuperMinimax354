@@ -1,7 +1,7 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
 import copy
-from reversi_board import ReversiBoard
-from base_player import MinimaxComputerPlayer
+from player2.reversi_board import ReversiBoard
+from player2.base_player import MinimaxComputerPlayer
 from datetime import datetime, timedelta
 from queue import Queue
 

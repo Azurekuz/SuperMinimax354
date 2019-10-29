@@ -1,7 +1,7 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
 import random
 import copy
-from reversi_board import ReversiBoard
+from player2.reversi_board import ReversiBoard
 
 class HumanPlayer:
 
