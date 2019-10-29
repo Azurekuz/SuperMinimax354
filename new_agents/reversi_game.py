@@ -3,10 +3,10 @@
 import copy
 import random
 from datetime import datetime
-from reversi_board import ReversiBoard, _drawBoard
-from all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player;
+from new_agents.reversi_board import ReversiBoard, _drawBoard
+from new_agents.all_players import get_default_player, get_player_a, get_player_b, get_player_c, get_player_d, get_combined_player;
 
-from mini_mega import Node
+from new_agents.mini_mega import Node
 
 class ReversiGame:
 
