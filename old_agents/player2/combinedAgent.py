@@ -1,5 +1,5 @@
 from old_agents.player2 import lookup_table, quiescent_search, transposition_table
-from new_agents import orion_player, alpha_beta_pruning
+from player2 import orion_player, alpha_beta_pruning
 from datetime import datetime
 
 class CombinedAgent(orion_player.oMinimaxComputerPlayer):

@@ -2,7 +2,7 @@
 
 import random
 import copy
-from new_agents.reversi_board import ReversiBoard
+from player2.reversi_board import ReversiBoard
 from reversi02.orion_player import MinimaxComputerPlayer;
 
 class AlphaBetaPruning(MinimaxComputerPlayer):

@@ -1,7 +1,7 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
 import copy, heapq
-from reversi_board import ReversiBoard, _drawBoard
-from base_player import MinimaxComputerPlayer
+from player2.reversi_board import ReversiBoard, _drawBoard
+from player2.base_player import MinimaxComputerPlayer
 from datetime import datetime, timedelta
 
 class MiniMega:
@@ -25,7 +25,7 @@ class MiniMega:
                     foundMove = True
                     break
         if self.root is None or tileCount < self.tileCount or not foundMove:  # If we can't for some reason make a new root
-            print("Generate new root")
+            #print("Generate new root")
             self.root = Node(None, board, None)
             self.root.eval = -110
             self.root.depth = self.countPieces(self.root.board._board)
@@ -42,7 +42,7 @@ class MiniMega:
                 if self.root is not None and self.root.moveToBestChoice is not None:
                     move = self.root.moveToBestChoice  # If we've run out of time, return the best choice we found
                     self.root = self.root.bestChoice
-                    print(datetime.now() - startTime)
+                    #print(datetime.now() - startTime)
                 else:
                     move = (-1, -1)
                 return move

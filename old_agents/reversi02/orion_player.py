@@ -1,6 +1,6 @@
 # adapted by Toby Dragon from original source code by Al Sweigart, available with creative commons license: https://inventwithpython.com/#donate
 import copy
-from new_agents.reversi_board import ReversiBoard
+from player2.reversi_board import ReversiBoard
 
 class MinimaxComputerPlayer:
 
