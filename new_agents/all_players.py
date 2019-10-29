@@ -1,4 +1,4 @@
-from new_agents import base_player, alpha_beta_pruning, quiescent_search, lookup_table, transposition_table, mini_mega
+import base_player, alpha_beta_pruning, quiescent_search, lookup_table, transposition_table, mini_mega
 
 def get_default_player(symbol):
     """
