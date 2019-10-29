@@ -9,7 +9,7 @@ class MiniMega:
     def __init__(self, symbol, timeLimit):
         self.symbol = symbol
         self.root = None
-        self.timeLimit = timedelta(seconds=(timeLimit - .06))
+        self.timeLimit = timedelta(seconds=(timeLimit - .1))
         self.tileCount = 0
         self.thingsToSearch = []
 
@@ -42,10 +42,6 @@ class MiniMega:
                 if self.root is not None and self.root.moveToBestChoice is not None:
                     move = self.root.moveToBestChoice  # If we've run out of time, return the best choice we found
                     self.root = self.root.bestChoice
-                    print(self.root.validMoves)
-                    print(move)
-                    print(self.root.eval)
-                    print(self.root.heuristicDepth - self.root.depth)
                     print(datetime.now() - startTime)
                 else:
                     move = (-1, -1)
